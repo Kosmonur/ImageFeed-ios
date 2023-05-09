@@ -13,6 +13,7 @@ class ImagesListViewController: UIViewController {
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "ru_RU")
         formatter.dateStyle = .long
         formatter.timeStyle = .none
         return formatter
@@ -71,7 +72,7 @@ extension ImagesListViewController {
         
         cell.cellImage.image = image
         cell.setupGradient()
-        cell.dateLabel.text = dateFormatter.string(from: Date())
+        cell.dateLabel.text = String(dateFormatter.string(from: Date()).dropLast(3))
         
         let ButtonState = indexPath.row % 2 == 0 ? "LikeButtonOn" : "LikeButtonOff"
         cell.likeButton.setImage(UIImage(named: ButtonState), for: .normal)
