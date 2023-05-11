@@ -7,8 +7,8 @@
 
 import UIKit
 
-class ImagesListViewController: UIViewController {
-
+final class ImagesListViewController: UIViewController {
+    
     @IBOutlet private weak var tableView: UITableView!
     
     private lazy var dateFormatter: DateFormatter = {
@@ -29,9 +29,6 @@ class ImagesListViewController: UIViewController {
 }
 
 extension ImagesListViewController: UITableViewDelegate {
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        
-    }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         guard let image = UIImage(named: photosName[indexPath.row]) else {
@@ -74,7 +71,7 @@ extension ImagesListViewController {
         cell.setupGradient()
         cell.dateLabel.text = String(dateFormatter.string(from: Date()).dropLast(3))
         
-        let ButtonState = indexPath.row % 2 == 0 ? "LikeButtonOn" : "LikeButtonOff"
-        cell.likeButton.setImage(UIImage(named: ButtonState), for: .normal)
+        let buttonState = indexPath.row % 2 == 0 ? "LikeButtonOn" : "LikeButtonOff"
+        cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
     }
 }

@@ -27,7 +27,7 @@ final class ImagesListCell: UITableViewCell {
         gradient.frame = CGRect(
             x: 0,
             y: 0,
-            width: self.bounds.size.width,
+            width: bounds.size.width,
             height: gradientView.frame.height)
         gradientView.layer.addSublayer(gradient)
         gradientNotAdded = false
