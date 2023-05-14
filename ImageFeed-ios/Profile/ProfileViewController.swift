@@ -16,4 +16,7 @@ final class ProfileViewController: UIViewController {
     @IBOutlet private weak var profileTextLabel: UILabel!
     @IBAction private func didTapLogout(_ sender: UIButton) {
     }
+    
+//    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    
 }

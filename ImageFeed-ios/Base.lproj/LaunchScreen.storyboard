@@ -17,8 +17,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplahScreenLogo" translatesAutoresizingMaskIntoConstraints="NO" id="zWm-wg-f3C">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="splah_screen_logo" translatesAutoresizingMaskIntoConstraints="NO" id="zWm-wg-f3C">
                                 <rect key="frame" x="159" y="387" width="75" height="78"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </imageView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -35,7 +36,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="SplahScreenLogo" width="75" height="78"/>
+        <image name="splah_screen_logo" width="75" height="78"/>
         <namedColor name="YP_Black">
             <color red="0.10199999809265137" green="0.10599999874830246" blue="0.13300000131130219" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
