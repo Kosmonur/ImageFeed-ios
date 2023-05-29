@@ -9,6 +9,7 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     @IBOutlet private weak var tableView: UITableView!
     
     private lazy var dateFormatter: DateFormatter = {
@@ -20,13 +21,25 @@ final class ImagesListViewController: UIViewController {
     }()
     
     private let photosName: [String] = Array(0..<20).map{ "\($0)" }
-    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+//    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
     }
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == ShowSingleImageSegueIdentifier {
+            let viewController = segue.destination as! SingleImageViewController
+            let indexPath = sender as! IndexPath
+            let image = UIImage(named: photosName[indexPath.row])
+            viewController.image = image
+        } else {
+            super.prepare(for: segue, sender: sender)
+        }
+    }
 }
+
+
 
 extension ImagesListViewController: UITableViewDelegate {
     
@@ -41,6 +54,10 @@ extension ImagesListViewController: UITableViewDelegate {
         let scale = imageViewWidth / imageWidth
         let cellHeight = image.size.height * scale + imageInsets.top + imageInsets.bottom
         return cellHeight
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
     }
     
 }
@@ -71,7 +88,9 @@ extension ImagesListViewController {
         cell.setupGradient()
         cell.dateLabel.text = String(dateFormatter.string(from: Date()).dropLast(3))
         
-        let buttonState = indexPath.row % 2 == 0 ? "LikeButtonOn" : "LikeButtonOff"
+        let buttonState = indexPath.row % 2 == 0 ? "like_button_on" : "like_button_off"
         cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
     }
 }
+
+
