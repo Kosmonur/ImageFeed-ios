@@ -39,10 +39,18 @@ final class SingleImageViewController: UIViewController {
         scrollView.maximumZoomScale = 7
         rescaleAndCenterImageInScrollView(image: image)
         
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap(gestureRecognizer:)))
-        tapRecognizer.numberOfTapsRequired = 2
-        scrollView.addGestureRecognizer(tapRecognizer)
-    }
+        let singleTap: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(onSingleTap(gestureRecognizer:)))
+        singleTap.numberOfTapsRequired = 1
+        scrollView.addGestureRecognizer(singleTap)
+        
+       let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap(gestureRecognizer:)))
+        doubleTap.numberOfTapsRequired = 2
+        scrollView.addGestureRecognizer(doubleTap)
+        
+        singleTap.require(toFail: doubleTap)
+        singleTap.delaysTouchesBegan = true
+        doubleTap.delaysTouchesBegan = true
+}
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
@@ -59,15 +67,8 @@ final class SingleImageViewController: UIViewController {
         let offsetY = max((scrollView.bounds.height - scrollView.contentSize.height) * 0.5, 0)
         scrollView.contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: 0, right: 0)
     }
-}
-
-extension SingleImageViewController: UIScrollViewDelegate {
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        imageView
-    }
     
-    @objc func onDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
-        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
+    private func onTapZooming(_ scale: CGFloat, _ gestureRecognizer: UITapGestureRecognizer) {
         if scale != scrollView.zoomScale {
             let point = gestureRecognizer.location(in: imageView)
             let scrollSize = scrollView.frame.size
@@ -76,6 +77,20 @@ extension SingleImageViewController: UIScrollViewDelegate {
             scrollView.zoom(to:CGRect(origin: origin, size: size), animated: true)
         }
     }
+    
+    @objc func onSingleTap(gestureRecognizer: UITapGestureRecognizer) {
+        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
+        onTapZooming(scale, gestureRecognizer)
+    }
+    
+    @objc func onDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
+        let scale = max(scrollView.zoomScale * 0.5, scrollView.minimumZoomScale)
+        onTapZooming(scale, gestureRecognizer)
+    }
 }
 
-
+extension SingleImageViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        imageView
+    }
+}
