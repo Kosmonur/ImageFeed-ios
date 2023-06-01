@@ -50,7 +50,7 @@ final class SingleImageViewController: UIViewController {
         singleTap.require(toFail: doubleTap)
         singleTap.delaysTouchesBegan = true
         doubleTap.delaysTouchesBegan = true
-}
+    }
     
     private func rescaleAndCenterImageInScrollView(image: UIImage) {
         let minZoomScale = scrollView.minimumZoomScale
