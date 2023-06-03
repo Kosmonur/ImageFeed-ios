@@ -11,10 +11,10 @@ final class OAuth2TokenStorage {
 
     var token: String? {
         get {
-            UserDefaults.standard.string(forKey: "Bearer Token")
+            UserDefaults.standard.string(forKey: "bearer_token")
         }
         set {
-            UserDefaults.standard.set(newValue, forKey: "Bearer Token")
+            UserDefaults.standard.set(newValue, forKey: "bearer_token")
         }
     }
 }

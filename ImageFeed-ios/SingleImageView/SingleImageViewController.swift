@@ -35,7 +35,7 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         imageView.image = image
-        scrollView.minimumZoomScale = 0.1
+        scrollView.minimumZoomScale = 2 //0.1
         scrollView.maximumZoomScale = 7
         rescaleAndCenterImageInScrollView(image: image)
         
@@ -79,12 +79,12 @@ final class SingleImageViewController: UIViewController {
     }
     
     @objc func onSingleTap(gestureRecognizer: UITapGestureRecognizer) {
-        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
+        let scale = max(scrollView.zoomScale * 0.5, scrollView.minimumZoomScale)
         onTapZooming(scale, gestureRecognizer)
     }
     
     @objc func onDoubleTap(gestureRecognizer: UITapGestureRecognizer) {
-        let scale = max(scrollView.zoomScale * 0.5, scrollView.minimumZoomScale)
+        let scale = min(scrollView.zoomScale * 2, scrollView.maximumZoomScale)
         onTapZooming(scale, gestureRecognizer)
     }
 }
