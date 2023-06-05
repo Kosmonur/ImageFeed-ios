@@ -48,6 +48,7 @@ extension OAuth2Service {
         completion: @escaping (Result<OAuthTokenResponseBody, Error>) -> Void
     ) -> URLSessionTask {
         let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
         return urlSession.data(for: request) { (result: Result<Data, Error>) in
             let response = result.flatMap { data -> Result<OAuthTokenResponseBody, Error> in
                 Result { try decoder.decode(OAuthTokenResponseBody.self, from: data) }
@@ -73,13 +74,6 @@ extension OAuth2Service {
         let tokenType: String
         let scope: String
         let createdAt: Int
-        
-        enum CodingKeys: String, CodingKey {
-            case accessToken = "access_token"
-            case tokenType = "token_type"
-            case scope
-            case createdAt = "created_at"
-        }
     }
 }
 
