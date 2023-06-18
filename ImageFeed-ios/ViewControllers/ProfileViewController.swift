@@ -9,6 +9,10 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage (named: "user_pick")
@@ -94,11 +98,38 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "YP_Black")
-        userPickImageView.isHidden = false
-        userNameLabel.isHidden = false
-        loginNameLabel.isHidden = false
-        profileTextLabel.isHidden = false
+        
+ //       userPickImageView.isHidden = false
         logoutButton.isHidden = false
+
+        updateProfileDetails(profile: profileService.profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+                    .addObserver(
+                        forName: ProfileImageService.DidChangeNotification,
+                        object: nil,
+                        queue: .main
+                    ) { [weak self] _ in
+                        guard let self = self else { return }
+                        self.updateAvatar()
+                    }
+        updateAvatar()
+    }
+    
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        userNameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        profileTextLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+        print(url)
+        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
     }
     
     @objc private func didTapLogoutButton() {

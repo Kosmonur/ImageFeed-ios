@@ -6,19 +6,21 @@
 //
 
 import UIKit
-import ProgressHUD
 
 final class SplashViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    private let profileImageService = ProfileImageService.shared
+    private let oauth2Service = OAuth2Service.shared
+    private let oauth2TokenStorage = OAuth2TokenStorage.shared
     private let ShowAuthenticationScreenSegueIdentifier = "ShowAuthenticationScreen"
-    private let oauth2TokenStorage = OAuth2TokenStorage()
-    private let oauth2Service = OAuth2Service()
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if oauth2TokenStorage.token != nil {
-            switchToTabBarController()
+        if let token = oauth2TokenStorage.token {
+            UIBlockingProgressHUD.show()
+            fetchProfile(token)
         } else {
             performSegue(withIdentifier: ShowAuthenticationScreenSegueIdentifier, sender: nil)
         }
@@ -50,22 +52,60 @@ extension SplashViewController {
 extension SplashViewController: AuthViewControllerDelegate {
     
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
-        ProgressHUD.show()
+        
         dismiss(animated: true) { [weak self] in
             guard let self else { return }
             
+            UIBlockingProgressHUD.show()
             oauth2Service.fetchAuthToken(code: code) { [weak self] result in
                 guard let self else { return }
                 switch result {
-                case .success:
-                    self.switchToTabBarController()
-                    ProgressHUD.dismiss()
+                case .success(let token):
+                    self.fetchProfile(token)
                 case .failure:
                     // TODO
+                    UIBlockingProgressHUD.dismiss()
                     print ("Ошибка:", result)
                     break
                 }
             }
         }
     }
+    
+    private func fetchProfile(_ token: String) {
+        
+        profileService.fetchProfile(token) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success:
+                if let userName = profileService.profile?.userName {
+                    profileImageService.fetchProfileImageURL(username: userName) {_ in }
+                }
+                self.switchToTabBarController()
+            case .failure:
+                UIBlockingProgressHUD.dismiss()
+                
+                // TODO [Sprint 11] Показать ошибку
+                print(#function)
+                showAlert() // окно ошибки появляется и сразу исчезает?!
+//                break
+                
+            }
+            UIBlockingProgressHUD.dismiss()
+        }
+    }
+    
+    func showAlert() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось войти в систему",
+            preferredStyle: .alert)
+        let action = UIAlertAction(title: "ОК", style: .default) {_ in
+            //            TODO заново переход на авторизацию в AuthViewController
+        }
+        alert.addAction(action)
+        self.present(alert, animated: true, completion: nil)
+    }
 }
+
