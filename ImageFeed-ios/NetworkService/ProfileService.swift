@@ -24,12 +24,7 @@ final class ProfileService {
             task?.cancel()
             lastToken = token
             
-//            let request = URLRequest.getRequest(token: token, path: "/me")
-            
-// делаем ошибочный путь для генерации ошибки
-            let request = URLRequest.getRequest(token: token, path: "/me-error")
-            
-            
+            let request = URLRequest.getRequest(token: token, path: "/me")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
                 guard let self else { return }
                 

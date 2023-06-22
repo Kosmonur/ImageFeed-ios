@@ -85,27 +85,33 @@ extension SplashViewController: AuthViewControllerDelegate {
                 self.switchToTabBarController()
             case .failure:
                 UIBlockingProgressHUD.dismiss()
-                
-                // TODO [Sprint 11] Показать ошибку
-                print(#function)
-                showAlert() // окно ошибки появляется и сразу исчезает?!
-//                break
-                
+                showAlert()
             }
             UIBlockingProgressHUD.dismiss()
         }
     }
     
-    func showAlert() {
+    private func showAlert() {
         let alert = UIAlertController(
             title: "Что-то пошло не так(",
             message: "Не удалось войти в систему",
             preferredStyle: .alert)
-        let action = UIAlertAction(title: "ОК", style: .default) {_ in
-            //            TODO заново переход на авторизацию в AuthViewController
+        let action = UIAlertAction(title: "ОК", style: .default) {[weak self] _ in
+            self?.switchToAuthViewController()
         }
         alert.addAction(action)
         self.present(alert, animated: true, completion: nil)
     }
+    
+    func switchToAuthViewController() {
+        let authViewController = UIStoryboard(name: "Main", bundle: .main)
+        guard let window = authViewController.instantiateViewController(withIdentifier: "authViewController") as? AuthViewController
+        else {
+            assertionFailure("Ошибка инициализации AuthViewController")
+            return
+        }
+        window.delegate = self
+        window.modalPresentationStyle = .fullScreen
+        present(window, animated: true)
+    }
 }
-

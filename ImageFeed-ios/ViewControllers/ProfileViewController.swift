@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
@@ -15,7 +16,8 @@ final class ProfileViewController: UIViewController {
     
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage (named: "user_pick")
+ //       imageView.image = UIImage (named: "user_pick")
+        imageView.image = UIImage (named: "user_placeholder")
         imageView.setValue(true, forKeyPath: "layer.masksToBounds")
         imageView.setValue(35, forKeyPath: "layer.cornerRadius")
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -99,9 +101,7 @@ final class ProfileViewController: UIViewController {
         
         view.backgroundColor = UIColor(named: "YP_Black")
         
- //       userPickImageView.isHidden = false
         logoutButton.isHidden = false
-
         updateProfileDetails(profile: profileService.profile)
         
         profileImageServiceObserver = NotificationCenter.default
@@ -128,8 +128,11 @@ final class ProfileViewController: UIViewController {
             let profileImageURL = ProfileImageService.shared.avatarURL,
             let url = URL(string: profileImageURL)
         else { return }
-        print(url)
-        // TODO [Sprint 11] Обновить аватар, используя Kingfisher
+
+        userPickImageView.kf.indicatorType = .activity
+        userPickImageView.kf.setImage(with: url,
+                                      placeholder: UIImage(named: "user_placeholder"),
+                                      options: [.forceRefresh])
     }
     
     @objc private func didTapLogoutButton() {

@@ -13,7 +13,7 @@ final class ProfileImageService {
         let profileImage: ProfileImage
     }
     struct ProfileImage: Decodable {
-        let small: String
+        let large: String
     }
     
     static let shared = ProfileImageService()
@@ -41,7 +41,7 @@ final class ProfileImageService {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let image):
-                        let avatar = image.profileImage.small
+                        let avatar = image.profileImage.large
                         self.avatarURL = avatar
                         completion(.success(avatar))
                         NotificationCenter.default

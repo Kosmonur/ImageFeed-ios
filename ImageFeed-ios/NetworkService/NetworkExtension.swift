@@ -48,11 +48,13 @@ extension URLSession {
                     
                     if let error {
                         completion(.failure(NetworkError.urlRequestError(error)))
+                        return
                     }
                     
                     if let response = response as? HTTPURLResponse,
                        !(200 ..< 300).contains(response.statusCode) {
-                           completion(.failure(NetworkError.httpStatusCode(response.statusCode)))
+                        completion(.failure(NetworkError.httpStatusCode(response.statusCode)))
+                        return
                        }
                        
                     guard let data else { return }
