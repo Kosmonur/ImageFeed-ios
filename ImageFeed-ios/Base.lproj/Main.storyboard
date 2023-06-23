@@ -10,24 +10,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Navigation Controller-->
-        <scene sceneID="d6k-HQ-FIq">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="K3e-8l-5pS" sceneMemberID="viewController">
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="J8Z-Nb-DEl">
-                        <rect key="frame" x="0.0" y="59" width="393" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="J4N-BG-aSz" kind="relationship" relationship="rootViewController" id="xzb-He-GT3"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="eEk-Fl-2oo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="98" y="-1837"/>
-        </scene>
         <!--Auth View Controller-->
         <scene sceneID="9Yi-eO-Aa6">
             <objects>
@@ -79,7 +61,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="IWa-Gi-3dt" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="882" y="-1837"/>
+            <point key="canvasLocation" x="97" y="-1837"/>
         </scene>
         <!--Web View View Controller-->
         <scene sceneID="V0P-Of-e0V">
@@ -135,7 +117,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Cea-R4-BTr" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1640" y="-1837"/>
+            <point key="canvasLocation" x="882" y="-1837"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="kK7-NV-hmi">

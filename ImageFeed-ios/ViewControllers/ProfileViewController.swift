@@ -137,12 +137,8 @@ final class ProfileViewController: UIViewController {
 
     @objc private func didTapLogoutButton() {
         print(#function)
-        
 //        let _: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
- 
-
-        
     }
 }
 
-//import SwiftKeychainWrapper
+import SwiftKeychainWrapper
