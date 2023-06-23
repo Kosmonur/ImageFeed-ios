@@ -134,8 +134,15 @@ final class ProfileViewController: UIViewController {
                                       placeholder: UIImage(named: "user_placeholder"),
                                       options: [.forceRefresh])
     }
-    
+
     @objc private func didTapLogoutButton() {
         print(#function)
+        
+//        let _: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
+ 
+
+        
     }
 }
+
+//import SwiftKeychainWrapper

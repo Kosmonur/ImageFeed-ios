@@ -21,3 +21,5 @@ final class OAuth2TokenStorage {
         }
     }
 }
+
+//let removeSuccessful: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
