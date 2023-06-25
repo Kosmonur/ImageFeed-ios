@@ -39,35 +39,43 @@ extension URLRequest {
 
 extension URLSession {
 
-    func objectTask<T: Decodable>(
-        for request: URLRequest,
-        completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
-
-            let task = dataTask(with: request) { data, response, error in
-                DispatchQueue.main.async {
+func objectTask<T: Decodable>(
+    for request: URLRequest,
+    completion: @escaping (Result<T, Error>) -> Void) -> URLSessionTask {
+        
+    let fulfillCompletion: (Result<T, Error>) -> Void = { result in
+        DispatchQueue.main.async {
+            completion(result)
+        }
+    }
+        let task = dataTask(with: request) { data, response, error in
+            
+            if let error {
+                fulfillCompletion(.failure(NetworkError.urlRequestError(error)))
+            } else {
+                
+                if let data,
+                   let response,
+                   let statusCode = (response as? HTTPURLResponse)?.statusCode {
                     
-                    if let error {
-                        completion(.failure(NetworkError.urlRequestError(error)))
-                        return
+                    if (200 ..< 300).contains(statusCode) {
+                        do {
+                            let decoder = JSONDecoder()
+                            decoder.keyDecodingStrategy = .convertFromSnakeCase
+                            let decodedData = try decoder.decode(T.self, from: data)
+                            fulfillCompletion(.success(decodedData))
+                        } catch {
+                            fulfillCompletion(.failure(error))
+                        }
+                    } else {
+                        fulfillCompletion(.failure(NetworkError.httpStatusCode(statusCode)))
                     }
-                    
-                    if let response = response as? HTTPURLResponse,
-                       !(200 ..< 300).contains(response.statusCode) {
-                        completion(.failure(NetworkError.httpStatusCode(response.statusCode)))
-                        return
-                       }
-                       
-                    guard let data else { return }
-                    do {
-                        let decoder = JSONDecoder()
-                        decoder.keyDecodingStrategy = .convertFromSnakeCase
-                        let decodedData = try decoder.decode(T.self, from: data)
-                        completion(.success(decodedData))
-                    } catch {
-                        completion(.failure(NetworkError.urlSessionError))
-                    }
+                } else {
+                    fulfillCompletion(.failure(NetworkError.urlSessionError))
                 }
             }
-            return task
         }
+        return task
+    }
 }
+
