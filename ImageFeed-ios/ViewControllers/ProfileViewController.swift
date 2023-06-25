@@ -16,7 +16,6 @@ final class ProfileViewController: UIViewController {
     
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
- //       imageView.image = UIImage (named: "user_pick")
         imageView.image = UIImage (named: "user_placeholder")
         imageView.setValue(true, forKeyPath: "layer.masksToBounds")
         imageView.setValue(35, forKeyPath: "layer.cornerRadius")
@@ -137,7 +136,7 @@ final class ProfileViewController: UIViewController {
 
     @objc private func didTapLogoutButton() {
         print(#function)
-//        let _: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
+        let _: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
     }
 }
 
