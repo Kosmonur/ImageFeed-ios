@@ -18,21 +18,24 @@ final class ProfileImageService {
     
     static let shared = ProfileImageService()
     static let DidChangeNotification = Notification.Name(rawValue: "ProfileImageProviderDidChange")
-    private var tokenStorage = OAuth2TokenStorage.shared
     private let urlSession = URLSession.shared
     private (set) var avatarURL: String?
     private var task: URLSessionTask?
     private var lastUserName: String?
+    private var lastToken: String?
 
     func fetchProfileImageURL(
+        _ token: String,
         username: String,
         _ completion: @escaping (Result<String, Error>) -> Void) {
             
             assert(Thread.isMainThread)
-            guard let token = tokenStorage.token else { return }
-            if lastUserName == username { return }
+
+            if (lastUserName == username) || (lastToken == token) { return }
             task?.cancel()
+            
             lastUserName = username
+            lastToken = token
 
             let request = URLRequest.getRequest(token: token, path: "/users/\(username)")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
@@ -41,18 +44,19 @@ final class ProfileImageService {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let image):
-                        let avatar = image.profileImage.large
-                        self.avatarURL = avatar
-                        completion(.success(avatar))
+                        let avatarURLString = image.profileImage.large
+                        self.avatarURL = avatarURLString
+                        completion(.success(avatarURLString))
                         NotificationCenter.default
                             .post(
                                 name: ProfileImageService.DidChangeNotification,
                                 object: self,
-                                userInfo: ["URL": avatar])
+                                userInfo: ["URL": avatarURLString])
                         self.task = nil
                     case .failure(let error):
                         completion(.failure(error))
                         self.lastUserName = nil
+                        self.lastToken = nil
                     }
                 }
             }

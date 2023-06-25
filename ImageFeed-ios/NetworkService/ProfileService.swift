@@ -38,6 +38,7 @@ final class ProfileService {
                     case .failure(let error):
                         completion(.failure(error))
                         self.lastToken = nil
+                        self.task = nil
                     }
                 }
             }
