@@ -6,12 +6,17 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ProfileViewController: UIViewController {
     
+    private let profileService = ProfileService.shared
+    
+    private var profileImageServiceObserver: NSObjectProtocol?
+    
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage (named: "user_pick")
+        imageView.image = UIImage (named: "user_placeholder")
         imageView.setValue(true, forKeyPath: "layer.masksToBounds")
         imageView.setValue(35, forKeyPath: "layer.cornerRadius")
         imageView.translatesAutoresizingMaskIntoConstraints = false
@@ -94,14 +99,45 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "YP_Black")
-        userPickImageView.isHidden = false
-        userNameLabel.isHidden = false
-        loginNameLabel.isHidden = false
-        profileTextLabel.isHidden = false
+        
         logoutButton.isHidden = false
+        updateProfileDetails(profile: profileService.profile)
+        
+        profileImageServiceObserver = NotificationCenter.default
+                    .addObserver(
+                        forName: ProfileImageService.DidChangeNotification,
+                        object: nil,
+                        queue: .main
+                    ) { [weak self] _ in
+                        guard let self = self else { return }
+                        self.updateAvatar()
+                    }
+        updateAvatar()
     }
     
+    private func updateProfileDetails(profile: Profile?) {
+        guard let profile = profile else { return }
+        userNameLabel.text = profile.name
+        loginNameLabel.text = profile.loginName
+        profileTextLabel.text = profile.bio
+    }
+    
+    private func updateAvatar() {
+        guard
+            let profileImageURL = ProfileImageService.shared.avatarURL,
+            let url = URL(string: profileImageURL)
+        else { return }
+
+        userPickImageView.kf.indicatorType = .activity
+        userPickImageView.kf.setImage(with: url,
+                                      placeholder: UIImage(named: "user_placeholder"),
+                                      options: [.forceRefresh])
+    }
+
     @objc private func didTapLogoutButton() {
         print(#function)
+        let _: Bool = KeychainWrapper.standard.removeObject(forKey: "bearer_token")
     }
 }
+
+import SwiftKeychainWrapper
