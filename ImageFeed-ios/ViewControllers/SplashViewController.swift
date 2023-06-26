@@ -12,7 +12,7 @@ final class SplashViewController: UIViewController {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private let oauth2Service = OAuth2Service.shared
-    private let oauth2TokenStorage = OAuth2TokenStorage.shared
+    private let auth2TokenStorage = OAuth2TokenStorage.shared
     
     private lazy var splashLogoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -31,13 +31,13 @@ final class SplashViewController: UIViewController {
         
         view.backgroundColor = UIColor(named: "YP_Black")
         splashLogoImageView.isHidden = false
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let token = oauth2TokenStorage.token {
+        if let token = auth2TokenStorage.token {
             UIBlockingProgressHUD.show()
             fetchProfile(token)
         } else {
@@ -57,23 +57,9 @@ extension SplashViewController: AuthViewControllerDelegate {
     
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         
-        dismiss(animated: true) { [weak self] in
-            guard let self else { return }
-            
-            UIBlockingProgressHUD.show()
-            oauth2Service.fetchAuthToken(code: code) { [weak self] result in
-                guard let self else { return }
-                switch result {
-                case .success(let token):
-                    self.fetchProfile(token)
-                case .failure:
-                    // TODO
-                    UIBlockingProgressHUD.dismiss()
-                    print ("Ошибка:", result)
-                    break
-                }
-            }
-        }
+        auth2TokenStorage.token = code
+        fetchProfile(code)
+        dismiss(animated: true)
     }
     
     private func fetchProfile(_ token: String) {
@@ -88,22 +74,19 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
                 self.switchToTabBarController()
             case .failure:
-                showAlert()
+                let alertModel = AlertModel(
+                    title: "Что-то пошло не так(",
+                    message: "Не удалось войти в систему",
+                    buttonText: "ОК") { [weak self] in
+                        guard let self else { return }
+                        
+                        self.showAuthViewController()
+                    }
+                let alertPresenter = AlertPresenter(alertController: self)
+                alertPresenter.showAlert(alertModel: alertModel)
             }
             UIBlockingProgressHUD.dismiss()
         }
-    }
-    
-    private func showAlert() {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так(",
-            message: "Не удалось войти в систему",
-            preferredStyle: .alert)
-        let action = UIAlertAction(title: "ОК", style: .default) {[weak self] _ in
-            self?.showAuthViewController()
-        }
-        alert.addAction(action)
-        self.present(alert, animated: true, completion: nil)
     }
     
     func showAuthViewController() {

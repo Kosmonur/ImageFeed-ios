@@ -13,14 +13,6 @@ final class OAuth2Service {
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
     private var lastCode: String?
-    private (set) var authToken: String? {
-        get {
-            return OAuth2TokenStorage().token
-        }
-        set {
-            OAuth2TokenStorage().token = newValue
-        }
-    }
     
     func fetchAuthToken (
         code: String,
@@ -38,9 +30,7 @@ final class OAuth2Service {
                 DispatchQueue.main.async {
                     switch result {
                     case .success(let body):
-                        let authToken = body.accessToken
-                        self.authToken = authToken
-                        completion(.success(authToken))
+                        completion(.success(body.accessToken))
                         self.task = nil
                     case .failure(let error):
                         completion(.failure(error))
