@@ -32,6 +32,13 @@ final class ImagesListService {
                     
                 case .success(let loadedPhotoResult):
                     self.photos += loadedPhotoResult.map({Photo(photoResult: $0)})
+                    
+                    NotificationCenter.default
+                        .post(
+                            name: ImagesListService.DidChangeNotification,
+                            object: self,
+                            userInfo: ["photos": self.photos])
+                    
                     self.lastLoadedPage = nextPage
                     self.task = nil
                     
