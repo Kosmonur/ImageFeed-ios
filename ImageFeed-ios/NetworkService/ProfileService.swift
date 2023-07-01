@@ -16,15 +16,16 @@ final class ProfileService {
     private var lastToken: String?
     
     func fetchProfile (
-        _ token: String,
         completion: @escaping (Result<Profile, Error>) -> Void) {
+            
+            guard let token = OAuth2TokenStorage.shared.token else { return }
             
             assert(Thread.isMainThread)
             if lastToken == token { return }
             task?.cancel()
             lastToken = token
             
-            let request = URLRequest.getRequest(token: token, path: "/me")
+            let request = URLRequest.getRequest(path: "/me")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
                 guard let self else { return }
                 

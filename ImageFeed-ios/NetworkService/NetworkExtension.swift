@@ -27,12 +27,13 @@ extension URLRequest {
         return request
     }
     
-    static func getRequest(token: String, path: String) -> URLRequest {
+    static func getRequest(path: String) -> URLRequest {
         var request = URLRequest.makeHTTPRequest(
             path: path,
             httpMethod: "GET"
         )
-        request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        if let token = OAuth2TokenStorage.shared.token {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")}
         return request
     }
 }

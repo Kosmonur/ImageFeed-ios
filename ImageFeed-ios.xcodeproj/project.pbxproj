@@ -22,6 +22,9 @@
 		F24F4F0A2A07B8CB007AC749 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F24F4F092A07B8CB007AC749 /* Assets.xcassets */; };
 		F24F4F0D2A07B8CB007AC749 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F24F4F0B2A07B8CB007AC749 /* LaunchScreen.storyboard */; };
 		F24F691C2A48EF75001C2D25 /* AlertPresenter .swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F691B2A48EF75001C2D25 /* AlertPresenter .swift */; };
+		F24F691E2A4DF9E7001C2D25 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F691D2A4DF9E7001C2D25 /* Photo.swift */; };
+		F24F69202A4DFB08001C2D25 /* PhotoResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F691F2A4DFB08001C2D25 /* PhotoResult.swift */; };
+		F24F69222A4E2AFF001C2D25 /* ImagesListService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F69212A4E2AFF001C2D25 /* ImagesListService.swift */; };
 		F255E0D52A0FF02700CA1957 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255E0D42A0FF02700CA1957 /* ProfileViewController.swift */; };
 		F255E0D72A110E9A00CA1957 /* SingleImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255E0D62A110E9A00CA1957 /* SingleImageViewController.swift */; };
 		F255E0DA2A254DD600CA1957 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = F255E0D92A254DD600CA1957 /* Constants.swift */; };
@@ -52,6 +55,9 @@
 		F24F4F0C2A07B8CB007AC749 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F24F4F0E2A07B8CB007AC749 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F24F691B2A48EF75001C2D25 /* AlertPresenter .swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertPresenter .swift"; sourceTree = "<group>"; };
+		F24F691D2A4DF9E7001C2D25 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
+		F24F691F2A4DFB08001C2D25 /* PhotoResult.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoResult.swift; sourceTree = "<group>"; };
+		F24F69212A4E2AFF001C2D25 /* ImagesListService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListService.swift; sourceTree = "<group>"; };
 		F255E0D42A0FF02700CA1957 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		F255E0D62A110E9A00CA1957 /* SingleImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SingleImageViewController.swift; sourceTree = "<group>"; };
 		F255E0D92A254DD600CA1957 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
@@ -119,6 +125,7 @@
 				F20B3A212A3A1E1C00685FAF /* ProfileService.swift */,
 				F20B3A2D2A3E03FC00685FAF /* ProfileImageService.swift */,
 				F20B3A1F2A37D44A00685FAF /* UIBlockingProgressHUD.swift */,
+				F24F69212A4E2AFF001C2D25 /* ImagesListService.swift */,
 			);
 			path = NetworkService;
 			sourceTree = "<group>";
@@ -144,6 +151,8 @@
 			children = (
 				F20B3A292A3DF2A100685FAF /* Profile.swift */,
 				F20B3A2B2A3DF33F00685FAF /* ProfileResult.swift */,
+				F24F691D2A4DF9E7001C2D25 /* Photo.swift */,
+				F24F691F2A4DFB08001C2D25 /* PhotoResult.swift */,
 			);
 			path = Structure;
 			sourceTree = "<group>";
@@ -229,6 +238,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F24F691E2A4DF9E7001C2D25 /* Photo.swift in Sources */,
+				F24F69222A4E2AFF001C2D25 /* ImagesListService.swift in Sources */,
 				F24F4F052A07B8CA007AC749 /* ImagesListViewController.swift in Sources */,
 				F20B3A2A2A3DF2A100685FAF /* Profile.swift in Sources */,
 				F2259F132A098B2A003F7344 /* ImagesListCell.swift in Sources */,
@@ -239,6 +250,7 @@
 				F2BE817D2A2791DE009CA280 /* OAuth2TokenStorage.swift in Sources */,
 				F20B3A202A37D44A00685FAF /* UIBlockingProgressHUD.swift in Sources */,
 				F255E0FC2A262E1E00CA1957 /* AuthViewController.swift in Sources */,
+				F24F69202A4DFB08001C2D25 /* PhotoResult.swift in Sources */,
 				F2BBD8CA2A461A5D00F216A4 /* TabBarController.swift in Sources */,
 				F255E0DA2A254DD600CA1957 /* Constants.swift in Sources */,
 				F24F691C2A48EF75001C2D25 /* AlertPresenter .swift in Sources */,
