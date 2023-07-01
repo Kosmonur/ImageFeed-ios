@@ -9,6 +9,8 @@ import UIKit
 
 final class ImagesListViewController: UIViewController {
     
+    private let imagesListService = ImagesListService.shared
+    
     private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
     @IBOutlet private weak var tableView: UITableView!
     
@@ -26,6 +28,10 @@ final class ImagesListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        
+        if imagesListService.photos.count == 0 {
+            imagesListService.fetchPhotosNextPage()
+        }
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == ShowSingleImageSegueIdentifier {
@@ -63,11 +69,13 @@ extension ImagesListViewController: UITableViewDelegate {
 }
 
 extension ImagesListViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView,
+                   numberOfRowsInSection section: Int) -> Int {
         return photosName.count
     }
     
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView,
+                   cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: ImagesListCell.reuseIdentifier, for: indexPath)
         guard let imageListCell = cell as? ImagesListCell else {
             return UITableViewCell()
@@ -90,6 +98,16 @@ extension ImagesListViewController {
         
         let buttonState = indexPath.row % 2 == 0 ? "like_button_on" : "like_button_off"
         cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
+    }
+    
+    
+    func tableView(_ tableView: UITableView,
+                   willDisplay cell: UITableViewCell,
+                   forRowAt indexPath: IndexPath) {
+        if indexPath.row + 1 == imagesListService.photos.count {
+            imagesListService.fetchPhotosNextPage()
+        }
+
     }
 }
 

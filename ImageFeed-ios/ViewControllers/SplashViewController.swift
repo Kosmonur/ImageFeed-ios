@@ -72,7 +72,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                 if let userName = profileService.profile?.userName {
                     profileImageService.fetchProfileImageURL(username: userName) {_ in }
                 }
-                self.switchToTabBarController()
+                switchToTabBarController()
             case .failure:
                 let alertModel = AlertModel(
                     title: "Что-то пошло не так(",
@@ -80,7 +80,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     buttonText: "ОК") { [weak self] in
                         guard let self else { return }
                         
-                        self.showAuthViewController()
+                        showAuthViewController()
                     }
                 let alertPresenter = AlertPresenter(alertController: self)
                 alertPresenter.showAlert(alertModel: alertModel)

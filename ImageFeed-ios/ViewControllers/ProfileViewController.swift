@@ -136,7 +136,10 @@ final class ProfileViewController: UIViewController {
 
     @objc private func didTapLogoutButton() {
         print(#function)
-        OAuth2TokenStorage.shared.removeToken()
+        
+        let imagesListService = ImagesListService.shared
+        imagesListService.fetchPhotosNextPage()
+//        OAuth2TokenStorage.shared.removeToken()
     }
 }
 
