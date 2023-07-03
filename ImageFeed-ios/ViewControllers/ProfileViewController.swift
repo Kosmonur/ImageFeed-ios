@@ -109,7 +109,7 @@ final class ProfileViewController: UIViewController {
                         object: nil,
                         queue: .main
                     ) { [weak self] _ in
-                        guard let self = self else { return }
+                        guard let self else { return }
                         self.updateAvatar()
                     }
         updateAvatar()
@@ -136,10 +136,8 @@ final class ProfileViewController: UIViewController {
 
     @objc private func didTapLogoutButton() {
         print(#function)
-        
-        let imagesListService = ImagesListService.shared
-        imagesListService.fetchPhotosNextPage()
-//        OAuth2TokenStorage.shared.removeToken()
+
+        OAuth2TokenStorage.shared.removeToken()
     }
 }
 

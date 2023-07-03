@@ -17,6 +17,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    var singleImageURLString: String = ""
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var scrollView: UIScrollView!
     
@@ -34,10 +36,23 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
-        scrollView.minimumZoomScale = 2 //0.1
-        scrollView.maximumZoomScale = 7
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        guard let imageUrl = URL(string: singleImageURLString) else { return }
+        
+        imageView.kf.indicatorType = .activity
+        imageView.kf.setImage(with: imageUrl,
+                              placeholder: UIImage(named: "stub"),
+                              options: []) { result in
+            switch result {
+            case .success(let value):
+                self.rescaleAndCenterImageInScrollView(image: value.image)
+            case .failure(let error):
+                print("Ошибка загрузки картинки: \(error)")
+            }
+        }
+        
+        scrollView.minimumZoomScale = 0.01 // 2
+        scrollView.maximumZoomScale = 1.25 // 7
         
         let singleTap: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(onSingleTap(gestureRecognizer:)))
         singleTap.numberOfTapsRequired = 1

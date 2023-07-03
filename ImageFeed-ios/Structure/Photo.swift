@@ -18,7 +18,7 @@ struct Photo {
     
     init(photoResult: PhotoResult) {
         self.id = photoResult.id ?? ""
-        self.size = CGSize(width: photoResult.width ?? 0, height: photoResult.width ?? 0)
+        self.size = CGSize(width: photoResult.width ?? 0, height: photoResult.height ?? 0)
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
         self.createdAt = dateFormatter.date(from:photoResult.createdAt ?? "") ?? Date()
