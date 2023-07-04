@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     
@@ -107,20 +108,26 @@ extension ImagesListViewController {
         
         cell.cellImage.kf.indicatorType = .activity
         
+        cell.cellImage.contentMode = .center
+        cell.cellImage.backgroundColor = UIColor(named: "YP_White_alfa")
+        cell.isUserInteractionEnabled = false
         cell.cellImage.kf.setImage(with: imageUrl,
-                              placeholder: UIImage(named: "stub")) { result in
+                                   placeholder: UIImage(named: "stub")) { result in
             switch result {
             case .success(_):
+                cell.cellImage.contentMode = .scaleAspectFill
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(let error):
                 print("Ошибка загрузки картинки: \(error)")
             }
+            cell.isUserInteractionEnabled = true
         }
 
         cell.setupGradient()
-        cell.dateLabel.text = String(dateFormatter.string(from: Date()).dropLast(3))
+        cell.dateLabel.text = String(dateFormatter.string(from: photo.createdAt).dropLast(3))
         
-        let buttonState = indexPath.row % 2 == 0 ? "like_button_on" : "like_button_off"
+//        let buttonState = indexPath.row % 2 == 0 ? "like_button_on" : "like_button_off"
+        let buttonState = photo.isLiked ? "like_button_on" : "like_button_off"
         cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
     }
     

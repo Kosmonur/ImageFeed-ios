@@ -37,22 +37,22 @@ final class SingleImageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        scrollView.minimumZoomScale = 0.03 // 2
+        scrollView.maximumZoomScale = 1.25 // 7
+        
         guard let imageUrl = URL(string: singleImageURLString) else { return }
         
-        imageView.kf.indicatorType = .activity
-        imageView.kf.setImage(with: imageUrl,
-                              placeholder: UIImage(named: "stub"),
-                              options: []) { result in
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: imageUrl) { [self] result in
             switch result {
             case .success(let value):
                 self.rescaleAndCenterImageInScrollView(image: value.image)
             case .failure(let error):
+                
                 print("Ошибка загрузки картинки: \(error)")
             }
+            UIBlockingProgressHUD.dismiss()
         }
-        
-        scrollView.minimumZoomScale = 0.01 // 2
-        scrollView.maximumZoomScale = 1.25 // 7
         
         let singleTap: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(onSingleTap(gestureRecognizer:)))
         singleTap.numberOfTapsRequired = 1
