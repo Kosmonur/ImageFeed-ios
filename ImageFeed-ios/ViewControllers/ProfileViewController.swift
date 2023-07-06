@@ -9,6 +9,26 @@ import UIKit
 import Kingfisher
 import WebKit
 
+struct Profile {
+    let userName: String
+    let name: String
+    let loginName: String
+    let bio: String
+    init(profileResult: ProfileResult) {
+        self.userName = profileResult.username ?? ""
+        self.name = "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")"
+        self.loginName = "@\(profileResult.username ?? "")"
+        self.bio = profileResult.bio ?? ""
+    }
+}
+
+struct ProfileResult: Decodable {
+    let username: String?
+    let firstName: String?
+    let lastName: String?
+    let bio: String?
+}
+
 final class ProfileViewController: UIViewController {
     
     private let profileService = ProfileService.shared

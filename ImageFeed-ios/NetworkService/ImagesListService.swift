@@ -7,6 +7,48 @@
 
 import Foundation
 
+private let dateFormatter = ISO8601DateFormatter()
+
+struct Photo {
+    let id: String
+    let size: CGSize
+    let createdAt: Date?
+    let welcomeDescription: String
+    let thumbImageURL: String
+    let largeImageURL: String
+    var isLiked: Bool
+}
+
+private struct PhotoResult: Decodable {
+    let id: String?
+    let width: Int?
+    let height: Int?
+    let createdAt: String?
+    let description: String?
+    let urls: UrlsResult
+    let likedByUser: Bool?
+    
+    func convertToViewModel() -> Photo {
+        return Photo (
+            id: self.id ?? "",
+            size: CGSize(width: self.width ?? 0, height: self.height ?? 0),
+            createdAt: dateFormatter.date(from:self.createdAt ?? ""),
+            welcomeDescription: self.description ?? "",
+            thumbImageURL: self.urls.thumb ?? "",
+            largeImageURL: self.urls.full ?? "",
+            isLiked: self.likedByUser ?? false)
+    }
+}
+
+private struct LikeResult: Decodable {
+    let photo: PhotoResult
+}
+
+struct UrlsResult: Decodable {
+    let full: String?
+    let thumb: String?
+}
+
 final class ImagesListService {
     
     static let shared = ImagesListService()
@@ -32,7 +74,7 @@ final class ImagesListService {
                 switch result {
                     
                 case .success(let loadedPhotoResult):
-                    self.photos += loadedPhotoResult.map({Photo(photoResult: $0)})
+                    self.photos += loadedPhotoResult.map({$0.convertToViewModel()})
                     
                     NotificationCenter.default
                         .post(
@@ -71,7 +113,7 @@ final class ImagesListService {
                 case .success(let likeResult):
                     let photoId = likeResult.photo.id
                     if let index = self.photos.firstIndex(where: { $0.id == photoId }) {
-                        self.photos[index].isLiked = !isLike
+                        self.photos[index].isLiked = likeResult.photo.convertToViewModel().isLiked
                     }
                     completion (.success(()))
                     self.liketask = nil

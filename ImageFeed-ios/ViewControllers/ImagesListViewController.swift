@@ -25,14 +25,14 @@ final class ImagesListViewController: UIViewController {
     }()
     
     private (set) var photos: [Photo] = []
+    
+    override func viewDidAppear(_ animated: Bool) {
+        ImagesListService.shared.fetchPhotosNextPage()
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
-        
-        if imagesListService.photos.count == 0 {
-            imagesListService.fetchPhotosNextPage()
-        }
         
         imagesListServiceObserver = NotificationCenter.default
                     .addObserver(

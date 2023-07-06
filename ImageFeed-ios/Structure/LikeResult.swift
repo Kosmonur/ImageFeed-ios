@@ -7,10 +7,10 @@
 
 import Foundation
 
-struct LikeResult: Codable {
-    let photo: LikedPhoto
-}
-
-struct LikedPhoto: Codable {
-    let id: String
-}
+//struct LikeResult: Codable {
+//    let photo: LikedPhoto
+//}
+//
+//struct LikedPhoto: Codable {
+//    let id: String
+//}
