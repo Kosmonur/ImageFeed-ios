@@ -8,6 +8,10 @@
 import UIKit
 import Kingfisher
 
+protocol ImagesListCellDelegate: AnyObject {
+    func imageListCellDidTapLike(_ cell: ImagesListCell)
+}
+
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
     @IBOutlet weak var cellImage: UIImageView!
@@ -15,6 +19,11 @@ final class ImagesListCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
     private var gradientNotAdded = true
+    weak var delegate: ImagesListCellDelegate?
+    
+    @IBAction func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
+    }
     
     func setupGradient() {
         guard gradientNotAdded else {

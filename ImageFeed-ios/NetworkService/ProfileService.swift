@@ -25,7 +25,7 @@ final class ProfileService {
             task?.cancel()
             lastToken = token
             
-            let request = URLRequest.getRequest(path: "/me")
+            let request = URLRequest.makeHTTPRequest(path: "/me", httpMethod: "GET")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<ProfileResult, Error>) in
                 guard let self else { return }
                 

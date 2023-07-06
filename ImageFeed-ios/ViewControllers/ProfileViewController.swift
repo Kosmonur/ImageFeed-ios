@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import WebKit
 
 final class ProfileViewController: UIViewController {
     
@@ -133,11 +134,35 @@ final class ProfileViewController: UIViewController {
                                       placeholder: UIImage(named: "user_placeholder"),
                                       options: [.forceRefresh])
     }
-
+    
     @objc private func didTapLogoutButton() {
-        print(#function)
-
-        OAuth2TokenStorage.shared.removeToken()
+        
+        let alert = UIAlertController(
+            title: "Пока, пока!",
+            message: "Уверены, что хотите выйти?",
+            preferredStyle: .alert)
+        
+        alert.addAction(UIAlertAction(title: "Нет", style: .cancel, handler: nil))
+        
+        alert.addAction(UIAlertAction(title: "Да", style: .default) { _ in
+            
+            OAuth2TokenStorage.shared.removeToken()
+            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
+            WKWebsiteDataStore.default().fetchDataRecords(
+                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
+                    records.forEach { record in
+                        WKWebsiteDataStore.default().removeData(
+                            ofTypes: record.dataTypes,
+                            for: [record],
+                            completionHandler: {})
+                    }
+                }
+            
+            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
+            window.rootViewController = SplashViewController()
+        })
+        
+        self.present(alert, animated: true)
     }
 }
 

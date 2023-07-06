@@ -24,14 +24,7 @@ extension URLRequest {
     ) -> URLRequest {
         var request = URLRequest(url: URL(string: path, relativeTo: baseURL) ?? baseURL)
         request.httpMethod = httpMethod
-        return request
-    }
-    
-    static func getRequest(path: String) -> URLRequest {
-        var request = URLRequest.makeHTTPRequest(
-            path: path,
-            httpMethod: "GET"
-        )
+        
         if let token = OAuth2TokenStorage.shared.token {
             request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")}
         return request

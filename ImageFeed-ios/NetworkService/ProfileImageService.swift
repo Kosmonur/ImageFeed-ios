@@ -38,7 +38,7 @@ final class ProfileImageService {
             lastUserName = username
             lastToken = token
 
-            let request = URLRequest.getRequest(path: "/users/\(username)")
+            let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
                 guard let self else { return }
                 

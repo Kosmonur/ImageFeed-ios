@@ -10,18 +10,17 @@ import Foundation
 struct Photo {
     let id: String
     let size: CGSize
-    let createdAt: Date
+    let createdAt: Date?
     let welcomeDescription: String
     let thumbImageURL: String
     let largeImageURL: String
-    let isLiked: Bool
+    var isLiked: Bool
     
     init(photoResult: PhotoResult) {
         self.id = photoResult.id ?? ""
         self.size = CGSize(width: photoResult.width ?? 0, height: photoResult.height ?? 0)
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
-        self.createdAt = dateFormatter.date(from:photoResult.createdAt ?? "") ?? Date()
+        let dateFormatter = ISO8601DateFormatter()
+        self.createdAt = dateFormatter.date(from:photoResult.createdAt ?? "")
         self.welcomeDescription = photoResult.description ?? ""
         self.thumbImageURL = photoResult.urls.thumb ?? ""
         self.largeImageURL = photoResult.urls.full ?? ""

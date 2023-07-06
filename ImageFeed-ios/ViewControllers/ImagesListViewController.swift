@@ -26,8 +26,6 @@ final class ImagesListViewController: UIViewController {
     
     private (set) var photos: [Photo] = []
 
-//    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
@@ -95,11 +93,13 @@ extension ImagesListViewController: UITableViewDataSource {
         }
         
         configCell(for: imageListCell, with: indexPath)
+        imageListCell.delegate = self
         return imageListCell
     }
 }
 
 extension ImagesListViewController {
+    
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         
         let photo = imagesListService.photos[indexPath.row]
@@ -124,13 +124,20 @@ extension ImagesListViewController {
         }
 
         cell.setupGradient()
-        cell.dateLabel.text = String(dateFormatter.string(from: photo.createdAt).dropLast(3))
         
-//        let buttonState = indexPath.row % 2 == 0 ? "like_button_on" : "like_button_off"
+        if let date = photo.createdAt {
+            cell.dateLabel.text = String(dateFormatter.string(from: date).dropLast(3))
+        } else {
+            cell.dateLabel.text = ""
+        }
+        
+        setIsLiked(photo, cell)
+    }
+    
+    private func setIsLiked(_ photo: Photo, _ cell: ImagesListCell) {
         let buttonState = photo.isLiked ? "like_button_on" : "like_button_off"
         cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
     }
-    
     
     func tableView(_ tableView: UITableView,
                    willDisplay cell: UITableViewCell,
@@ -155,4 +162,23 @@ extension ImagesListViewController {
     }
 }
 
+extension ImagesListViewController: ImagesListCellDelegate {
+    func imageListCellDidTapLike(_ cell: ImagesListCell) {
+        guard let indexPath = tableView.indexPath(for: cell) else { return }
+        let photo = photos[indexPath.row]
+        UIBlockingProgressHUD.show()
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {
+            result in
+            switch result {
+            case .success:
+                self.photos[indexPath.row].isLiked = self.imagesListService.photos[indexPath.row].isLiked
+                self.setIsLiked(self.photos[indexPath.row], cell)
+                UIBlockingProgressHUD.dismiss()
+            case .failure(let error):
+                UIBlockingProgressHUD.dismiss()
+                print("Ошибка обновления лайка: \(error)")
+            }
+        }
+    }
+}
 
