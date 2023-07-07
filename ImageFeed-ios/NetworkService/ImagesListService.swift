@@ -30,13 +30,13 @@ private struct PhotoResult: Decodable {
     
     func convertToViewModel() -> Photo {
         return Photo (
-            id: self.id ?? "",
-            size: CGSize(width: self.width ?? 0, height: self.height ?? 0),
-            createdAt: dateFormatter.date(from:self.createdAt ?? ""),
-            welcomeDescription: self.description ?? "",
-            thumbImageURL: self.urls.thumb ?? "",
-            largeImageURL: self.urls.full ?? "",
-            isLiked: self.likedByUser ?? false)
+            id: id ?? "",
+            size: CGSize(width: width ?? 0, height: height ?? 0),
+            createdAt: dateFormatter.date(from: createdAt ?? ""),
+            welcomeDescription: description ?? "",
+            thumbImageURL: urls.thumb ?? "",
+            largeImageURL: urls.full ?? "",
+            isLiked: likedByUser ?? false)
     }
 }
 
@@ -51,10 +51,9 @@ struct UrlsResult: Decodable {
 
 final class ImagesListService {
     
-    static let shared = ImagesListService()
     private let urlSession = URLSession.shared
     private (set) var photos: [Photo] = []
-    static let DidChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
+    static let didChangeNotification = Notification.Name(rawValue: "ImagesListServiceDidChange")
     private var task: URLSessionTask?
     private var liketask: URLSessionTask?
     private var lastLoadedPage: Int?
@@ -64,7 +63,7 @@ final class ImagesListService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        let nextPage = lastLoadedPage == nil ? 1 : lastLoadedPage! + 1
+        let nextPage = lastLoadedPage ?? 0 + 1
         
         let request = URLRequest.makeHTTPRequest(path: "/photos?page=\(nextPage)&&per_page=10", httpMethod: "GET")
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
@@ -78,7 +77,7 @@ final class ImagesListService {
                     
                     NotificationCenter.default
                         .post(
-                            name: ImagesListService.DidChangeNotification,
+                            name: ImagesListService.didChangeNotification,
                             object: self,
                             userInfo: ["photos": self.photos])
                     

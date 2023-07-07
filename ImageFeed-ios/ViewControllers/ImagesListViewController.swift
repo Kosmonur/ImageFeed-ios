@@ -10,24 +10,24 @@ import Kingfisher
 
 final class ImagesListViewController: UIViewController {
     
-    private let imagesListService = ImagesListService.shared
+    private let imagesListService = ImagesListService()
+    
     private var imagesListServiceObserver: NSObjectProtocol?
     
-    private let ShowSingleImageSegueIdentifier = "ShowSingleImage"
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     @IBOutlet private weak var tableView: UITableView!
     
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
-        formatter.dateStyle = .long
-        formatter.timeStyle = .none
+        formatter.dateFormat = "dd MMMM yyyy"
         return formatter
     }()
     
     private (set) var photos: [Photo] = []
     
     override func viewDidAppear(_ animated: Bool) {
-        ImagesListService.shared.fetchPhotosNextPage()
+        imagesListService.fetchPhotosNextPage()
     }
 
     override func viewDidLoad() {
@@ -36,7 +36,7 @@ final class ImagesListViewController: UIViewController {
         
         imagesListServiceObserver = NotificationCenter.default
                     .addObserver(
-                        forName: ImagesListService.DidChangeNotification,
+                        forName: ImagesListService.didChangeNotification,
                         object: nil,
                         queue: .main
                     ) { [weak self] _ in
@@ -46,9 +46,9 @@ final class ImagesListViewController: UIViewController {
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowSingleImageSegueIdentifier {
-            let viewController = segue.destination as! SingleImageViewController
-            let indexPath = sender as! IndexPath
+        if segue.identifier == showSingleImageSegueIdentifier,
+           let viewController = segue.destination as? SingleImageViewController,
+           let indexPath = sender as? IndexPath {
             let singleImageURLString = imagesListService.photos[indexPath.row].largeImageURL
             viewController.singleImageURLString = singleImageURLString
         } else {
@@ -74,7 +74,7 @@ extension ImagesListViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: ShowSingleImageSegueIdentifier, sender: indexPath)
+        performSegue(withIdentifier: showSingleImageSegueIdentifier, sender: indexPath)
     }
     
 }
@@ -114,7 +114,7 @@ extension ImagesListViewController {
         cell.cellImage.kf.setImage(with: imageUrl,
                                    placeholder: UIImage(named: "stub")) { result in
             switch result {
-            case .success(_):
+            case .success:
                 cell.cellImage.contentMode = .scaleAspectFill
                 self.tableView.reloadRows(at: [indexPath], with: .automatic)
             case .failure(let error):
@@ -126,7 +126,7 @@ extension ImagesListViewController {
         cell.setupGradient()
         
         if let date = photo.createdAt {
-            cell.dateLabel.text = String(dateFormatter.string(from: date).dropLast(3))
+            cell.dateLabel.text = dateFormatter.string(from: date)
         } else {
             cell.dateLabel.text = ""
         }
