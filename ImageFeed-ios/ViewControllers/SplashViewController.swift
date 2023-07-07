@@ -37,11 +37,11 @@ final class SplashViewController: UIViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        if let token = auth2TokenStorage.token {
-            UIBlockingProgressHUD.show()
-            fetchProfile(token)
-        } else {
+        if auth2TokenStorage.token == nil  {
             showAuthViewController()
+        } else {
+            UIBlockingProgressHUD.show()
+            fetchProfile()
         }
     }
     
@@ -58,21 +58,21 @@ extension SplashViewController: AuthViewControllerDelegate {
     func authViewController(_ vc: AuthViewController, didAuthenticateWithCode code: String) {
         
         auth2TokenStorage.token = code
-        fetchProfile(code)
+        fetchProfile()
         dismiss(animated: true)
     }
     
-    private func fetchProfile(_ token: String) {
+    private func fetchProfile() {
         
-        profileService.fetchProfile(token) { [weak self] result in
+        profileService.fetchProfile() { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success:
                 if let userName = profileService.profile?.userName {
-                    profileImageService.fetchProfileImageURL(token, username: userName) {_ in }
+                    profileImageService.fetchProfileImageURL(username: userName) {_ in }
                 }
-                self.switchToTabBarController()
+                switchToTabBarController()
             case .failure:
                 let alertModel = AlertModel(
                     title: "Что-то пошло не так(",
@@ -80,7 +80,7 @@ extension SplashViewController: AuthViewControllerDelegate {
                     buttonText: "ОК") { [weak self] in
                         guard let self else { return }
                         
-                        self.showAuthViewController()
+                        showAuthViewController()
                     }
                 let alertPresenter = AlertPresenter(alertController: self)
                 alertPresenter.showAlert(alertModel: alertModel)
@@ -90,14 +90,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     func showAuthViewController() {
-        let authViewController = UIStoryboard(name: "Main", bundle: .main)
-        guard let window = authViewController.instantiateViewController(withIdentifier: "AuthViewController") as? AuthViewController
-        else {
-            assertionFailure("Ошибка инициализации AuthViewController")
-            return
-        }
-        window.delegate = self
-        window.modalPresentationStyle = .fullScreen
-        present(window, animated: true)
-    }
+          let authViewController = AuthViewController()
+          authViewController.delegate = self
+          authViewController.modalPresentationStyle = .fullScreen
+          present(authViewController, animated: true)
+      }
+
 }

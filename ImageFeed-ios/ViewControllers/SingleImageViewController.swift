@@ -17,6 +17,8 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    var singleImageURLString: String = ""
+    
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var scrollView: UIScrollView!
     
@@ -34,10 +36,11 @@ final class SingleImageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        imageView.image = image
-        scrollView.minimumZoomScale = 2 //0.1
-        scrollView.maximumZoomScale = 7
-        rescaleAndCenterImageInScrollView(image: image)
+        
+        scrollView.minimumZoomScale = 0.05
+        scrollView.maximumZoomScale = 1.25
+        
+        downloadLargeImage()
         
         let singleTap: UITapGestureRecognizer =  UITapGestureRecognizer(target: self, action: #selector(onSingleTap(gestureRecognizer:)))
         singleTap.numberOfTapsRequired = 1
@@ -78,6 +81,36 @@ final class SingleImageViewController: UIViewController {
         }
     }
     
+    private func downloadLargeImage() {
+        guard let imageUrl = URL(string: singleImageURLString) else { return }
+        UIBlockingProgressHUD.show()
+        imageView.kf.setImage(with: imageUrl) { [weak self] result in
+            UIBlockingProgressHUD.dismiss()
+            guard let self else { return }
+            switch result {
+            case .success(let imageResult):
+                self.rescaleAndCenterImageInScrollView(image: imageResult.image)
+            case .failure:
+                self.showError()
+            }
+        }
+    }
+    
+    private func showError() {
+        let alert = UIAlertController(
+            title: "Что-то пошло не так.",
+            message: "Попробовать ещё раз?",
+            preferredStyle: .alert)
+         
+        alert.addAction(UIAlertAction(title: "Не надо", style: .default) { [weak self] result in
+            self?.dismiss(animated: true, completion: nil)
+        })
+        alert.addAction(UIAlertAction(title: "Повторить", style: .cancel) { [weak self] result in
+            self?.downloadLargeImage()
+        })
+        self.present(alert, animated: true)
+    }
+    
     @objc func onSingleTap(gestureRecognizer: UITapGestureRecognizer) {
         let scale = max(scrollView.zoomScale * 0.5, scrollView.minimumZoomScale)
         onTapZooming(scale, gestureRecognizer)
@@ -94,3 +127,5 @@ extension SingleImageViewController: UIScrollViewDelegate {
         imageView
     }
 }
+
+
