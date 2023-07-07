@@ -63,7 +63,7 @@ final class ImagesListService {
         assert(Thread.isMainThread)
         task?.cancel()
         
-        let nextPage = lastLoadedPage ?? 0 + 1
+        let nextPage = (lastLoadedPage ?? 0) + 1
         
         let request = URLRequest.makeHTTPRequest(path: "/photos?page=\(nextPage)&&per_page=10", httpMethod: "GET")
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
