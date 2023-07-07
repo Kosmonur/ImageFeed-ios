@@ -34,6 +34,8 @@ final class SingleImageViewController: UIViewController {
         present(share, animated: true, completion: nil)
     }
     
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
