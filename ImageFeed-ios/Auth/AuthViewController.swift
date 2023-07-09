@@ -14,7 +14,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-    private let ShowWebViewSegueIdentifier = "ShowWebView"
+//    private let ShowWebViewSegueIdentifier = "ShowWebView"
     private let auth2Service = OAuth2Service()
     
     private lazy var authLogoImageView: UIImageView = {
@@ -66,21 +66,21 @@ final class AuthViewController: UIViewController {
 
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if segue.identifier == ShowWebViewSegueIdentifier {
-            guard
-                let webViewViewController = segue.destination as? WebViewViewController
-            else {
-                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
-            }
-            let webViewPresenter = WebViewPresenter()
-            webViewViewController.presenter = webViewPresenter
-            webViewPresenter.view = webViewViewController
-            webViewViewController.delegate = self
-        } else {
-            super.prepare(for: segue, sender: sender)
-        }
-    }
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        if segue.identifier == ShowWebViewSegueIdentifier {
+//            guard
+//                let webViewViewController = segue.destination as? WebViewViewController
+//            else {
+//                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
+//            }
+//            let webViewPresenter = WebViewPresenter()
+//            webViewViewController.presenter = webViewPresenter
+//            webViewPresenter.view = webViewViewController
+//            webViewViewController.delegate = self
+//        } else {
+//            super.prepare(for: segue, sender: sender)
+//        }
+//    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
@@ -124,7 +124,12 @@ extension AuthViewController: WebViewViewControllerDelegate {
             assertionFailure("Ошибка инициализации WebViewViewController")
             return
         }
+
+        let webViewPresenter = WebViewPresenter()
+        webViewViewController.presenter = webViewPresenter
+        webViewPresenter.view = webViewViewController
         webViewViewController.delegate = self
+        
         webViewViewController.modalPresentationStyle = .fullScreen
         present(webViewViewController, animated: true)
         }
