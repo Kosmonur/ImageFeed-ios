@@ -90,10 +90,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     func showAuthViewController() {
-          let authViewController = AuthViewController()
-          authViewController.delegate = self
-          authViewController.modalPresentationStyle = .fullScreen
-          present(authViewController, animated: true)
+        let authViewController = AuthViewController()
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true)
       }
 
 }
