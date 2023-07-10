@@ -14,7 +14,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-    private let oauth2Service = OAuth2Service.shared
+    private let oAuth2Service = OAuth2Service.shared
     
     private lazy var authLogoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -76,7 +76,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
 
     private func fetchOAuthToken(authCode code: String) {
         UIBlockingProgressHUD.show()
-        oauth2Service.fetchAuthToken(code: code) { [weak self] result in
+        oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
             guard let self else {return}
             
             switch result {
