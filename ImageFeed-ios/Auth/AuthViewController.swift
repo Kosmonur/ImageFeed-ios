@@ -14,8 +14,7 @@ protocol AuthViewControllerDelegate: AnyObject {
 final class AuthViewController: UIViewController {
     
     weak var delegate: AuthViewControllerDelegate?
-//    private let ShowWebViewSegueIdentifier = "ShowWebView"
-    private let auth2Service = OAuth2Service()
+    private let oauth2Service = OAuth2Service.shared
     
     private lazy var authLogoImageView: UIImageView = {
         let imageView = UIImageView()
@@ -65,28 +64,11 @@ final class AuthViewController: UIViewController {
         loginButton.isHidden = false
 
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == ShowWebViewSegueIdentifier {
-//            guard
-//                let webViewViewController = segue.destination as? WebViewViewController
-//            else {
-//                fatalError("Failed to prepare for \(ShowWebViewSegueIdentifier)")
-//            }
-//            let webViewPresenter = WebViewPresenter()
-//            webViewViewController.presenter = webViewPresenter
-//            webViewPresenter.view = webViewViewController
-//            webViewViewController.delegate = self
-//        } else {
-//            super.prepare(for: segue, sender: sender)
-//        }
-//    }
 }
 
 extension AuthViewController: WebViewViewControllerDelegate {
     
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
-        delegate?.authViewController(self, didAuthenticateWithCode: code)
         vc.dismiss(animated: true) {[weak self] in
             self?.fetchOAuthToken(authCode: code)
         }
@@ -94,7 +76,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
 
     private func fetchOAuthToken(authCode code: String) {
         UIBlockingProgressHUD.show()
-        auth2Service.fetchAuthToken(code: code) { [weak self] result in
+        oauth2Service.fetchAuthToken(code: code) { [weak self] result in
             guard let self else {return}
             
             switch result {
