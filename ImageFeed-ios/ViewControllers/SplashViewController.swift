@@ -73,14 +73,11 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
                 switchToTabBarController()
             case .failure:
-                let alertModel = AlertModel(
-                    title: "Что-то пошло не так(",
-                    message: "Не удалось войти в систему",
-                    buttonText: "ОК") { [weak self] in
-                        guard let self else { return }
-                        
-                        showAuthViewController()
-                    }
+                var alertModel = AlertOneButton.notLogin
+                alertModel.completion = { [weak self] in
+                    guard let self else { return }
+                    showAuthViewController()
+                }
                 let alertPresenter = AlertPresenter(alertController: self)
                 alertPresenter.showAlert(alertModel: alertModel)
             }

@@ -48,7 +48,7 @@ final class SingleImageViewController: UIViewController {
         singleTap.numberOfTapsRequired = 1
         scrollView.addGestureRecognizer(singleTap)
         
-       let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap(gestureRecognizer:)))
+        let doubleTap: UITapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(onDoubleTap(gestureRecognizer:)))
         doubleTap.numberOfTapsRequired = 2
         scrollView.addGestureRecognizer(doubleTap)
         
@@ -99,18 +99,16 @@ final class SingleImageViewController: UIViewController {
     }
     
     private func showError() {
-        let alert = UIAlertController(
-            title: "Что-то пошло не так.",
-            message: "Попробовать ещё раз?",
-            preferredStyle: .alert)
-         
-        alert.addAction(UIAlertAction(title: "Не надо", style: .default) { [weak self] result in
-            self?.dismiss(animated: true, completion: nil)
-        })
-        alert.addAction(UIAlertAction(title: "Повторить", style: .cancel) { [weak self] result in
-            self?.downloadLargeImage()
-        })
-        self.present(alert, animated: true)
+        var alertModel = AlertTwoButton.repeatOrNot
+        alertModel.completion1Button = {
+            self.downloadLargeImage()
+        }
+        alertModel.completion2Button = {
+            self.dismiss(animated: true)
+        }
+        
+        let alertPresenter = AlertPresenter(alertController: self)
+        alertPresenter.showAlert(alertModel: alertModel)
     }
     
     @objc func onSingleTap(gestureRecognizer: UITapGestureRecognizer) {

@@ -159,15 +159,9 @@ final class ProfileViewController: UIViewController {
     
     @objc private func didTapLogoutButton() {
         
-        let alert = UIAlertController(
-            title: "Пока, пока!",
-            message: "Уверены, что хотите выйти?",
-            preferredStyle: .alert)
-        
-        alert.addAction(UIAlertAction(title: "Нет", style: .cancel, handler: nil))
-        
-        alert.addAction(UIAlertAction(title: "Да", style: .default) { _ in
-            
+        var alertModel = AlertTwoButton.exitOrNot
+
+        alertModel.completion2Button = {
             OAuth2TokenStorage.shared.removeToken()
             HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
             WKWebsiteDataStore.default().fetchDataRecords(
@@ -179,12 +173,12 @@ final class ProfileViewController: UIViewController {
                             completionHandler: {})
                     }
                 }
-            
             guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
             window.rootViewController = SplashViewController()
-        })
+        }
         
-        self.present(alert, animated: true)
+        let alertPresenter = AlertPresenter(alertController: self)
+        alertPresenter.showAlert(alertModel: alertModel)
     }
 }
 

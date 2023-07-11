@@ -83,10 +83,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             case .success(let token):
                 self.delegate?.authViewController(self, didAuthenticateWithCode: token)
             case .failure:
-                let alertModel = AlertModel(
-                    title: "Что-то пошло не так(",
-                    message: "Не удалось войти в систему",
-                    buttonText: "ОК") { }
+                let alertModel = AlertOneButton.notLogin
                 let alertPresenter = AlertPresenter(alertController: self)
                 alertPresenter.showAlert(alertModel: alertModel)
             }
