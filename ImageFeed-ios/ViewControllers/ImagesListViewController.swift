@@ -8,7 +8,13 @@
 import UIKit
 import Kingfisher
 
-final class ImagesListViewController: UIViewController {
+public protocol ImagesListViewControllerProtocol: AnyObject {
+    var presenter: ImagesListViewPresenterProtocol? { get set }
+}
+
+final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
+    
+    var presenter: ImagesListViewPresenterProtocol?
     
     private let imagesListService = ImagesListService()
     

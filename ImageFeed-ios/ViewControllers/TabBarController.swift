@@ -7,19 +7,26 @@
 
 import UIKit
  
-final class TabBarController: UITabBarController { //, ProfileViewControllerDelegate {
+final class TabBarController: UITabBarController {
     override func awakeFromNib() {
         super.awakeFromNib()
         let storyboard = UIStoryboard(name: "Main", bundle: .main)
         
-        let imagesListViewController = storyboard.instantiateViewController(
-            withIdentifier: "ImagesListViewController"
-        )
+        guard let imagesListViewController = storyboard.instantiateViewController(
+            withIdentifier: "ImagesListViewController") as? ImagesListViewController
+        else {
+            assertionFailure("Ошибка инициализации ImagesListViewController")
+            return
+        }
+        
         imagesListViewController.tabBarItem = UITabBarItem(
             title: nil,
             image: UIImage(named: "tab_editorial_active"),
             selectedImage: nil)
-        
+
+        let imagesListViewPresenter = ImagesListViewPresenter()
+        imagesListViewController.presenter = imagesListViewPresenter
+        imagesListViewPresenter.view = imagesListViewController
         
         let profileViewController = ProfileViewController()
         profileViewController.tabBarItem = UITabBarItem(
