@@ -10,6 +10,7 @@ import Kingfisher
 
 public protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
+    func updateTableViewAnimated()
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -17,8 +18,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     var presenter: ImagesListViewPresenterProtocol?
     
     private let imagesListService = ImagesListService()
-    
-    private var imagesListServiceObserver: NSObjectProtocol?
     
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     @IBOutlet private weak var tableView: UITableView!
@@ -40,17 +39,9 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
         
-        imagesListServiceObserver = NotificationCenter.default
-                    .addObserver(
-                        forName: ImagesListService.didChangeNotification,
-                        object: nil,
-                        queue: .main
-                    ) { [weak self] _ in
-                        guard let self else { return }
-                        updateTableViewAnimated()
-                    }
+        tableView.contentInset = UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 0)
+        presenter?.viewDidLoad()
         
     }
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
