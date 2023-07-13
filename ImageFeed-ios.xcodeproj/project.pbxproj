@@ -36,6 +36,7 @@
 		F2BE817B2A278338009CA280 /* OAuth2Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2BE817A2A278338009CA280 /* OAuth2Service.swift */; };
 		F2BE817D2A2791DE009CA280 /* OAuth2TokenStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2BE817C2A2791DE009CA280 /* OAuth2TokenStorage.swift */; };
 		F2BE81812A2911A9009CA280 /* SplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2BE81802A2911A9009CA280 /* SplashViewController.swift */; };
+		F2CADF2F2A5F418200B8E9C4 /* ProfileViewPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2CADF2E2A5F418200B8E9C4 /* ProfileViewPresenter.swift */; };
 		F2DF40DB2A436DEC00331249 /* SwiftKeychainWrapper in Frameworks */ = {isa = PBXBuildFile; productRef = F2DF40DA2A436DEC00331249 /* SwiftKeychainWrapper */; };
 /* End PBXBuildFile section */
 
@@ -80,6 +81,7 @@
 		F2BE817A2A278338009CA280 /* OAuth2Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2Service.swift; sourceTree = "<group>"; };
 		F2BE817C2A2791DE009CA280 /* OAuth2TokenStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OAuth2TokenStorage.swift; sourceTree = "<group>"; };
 		F2BE81802A2911A9009CA280 /* SplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashViewController.swift; sourceTree = "<group>"; };
+		F2CADF2E2A5F418200B8E9C4 /* ProfileViewPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewPresenter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -178,6 +180,7 @@
 			children = (
 				F2BE81802A2911A9009CA280 /* SplashViewController.swift */,
 				F255E0D42A0FF02700CA1957 /* ProfileViewController.swift */,
+				F2CADF2E2A5F418200B8E9C4 /* ProfileViewPresenter.swift */,
 				F24F4F042A07B8CA007AC749 /* ImagesListViewController.swift */,
 				F255E0D62A110E9A00CA1957 /* SingleImageViewController.swift */,
 				F2BBD8C92A461A5D00F216A4 /* TabBarController.swift */,
@@ -311,6 +314,7 @@
 				F255E0FC2A262E1E00CA1957 /* AuthViewController.swift in Sources */,
 				F2898F382A5B28A70028C978 /* WebViewPresenter.swift in Sources */,
 				F2BBD8CA2A461A5D00F216A4 /* TabBarController.swift in Sources */,
+				F2CADF2F2A5F418200B8E9C4 /* ProfileViewPresenter.swift in Sources */,
 				F255E0DA2A254DD600CA1957 /* AuthConfiguration.swift in Sources */,
 				F24F691C2A48EF75001C2D25 /* AlertPresenter .swift in Sources */,
 				F255E0D72A110E9A00CA1957 /* SingleImageViewController.swift in Sources */,

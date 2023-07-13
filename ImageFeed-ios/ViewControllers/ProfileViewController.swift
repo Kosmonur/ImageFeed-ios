@@ -7,34 +7,18 @@
 
 import UIKit
 import Kingfisher
-import WebKit
 
-struct Profile {
-    let userName: String
-    let name: String
-    let loginName: String
-    let bio: String
-    init(profileResult: ProfileResult) {
-        self.userName = profileResult.username ?? ""
-        self.name = "\(profileResult.firstName ?? "") \(profileResult.lastName ?? "")"
-        self.loginName = "@\(profileResult.username ?? "")"
-        self.bio = profileResult.bio ?? ""
-    }
+public protocol ProfileViewControllerProtocol: AnyObject {
+    var presenter: ProfileViewPresenterProtocol? { get set }
+    var userNameLabel: UILabel { get set }
+    var loginNameLabel: UILabel { get set }
+    var profileTextLabel: UILabel { get set }
+    func updateAvatar(_ avatarStringURL: String?)
 }
 
-struct ProfileResult: Decodable {
-    let username: String?
-    let firstName: String?
-    let lastName: String?
-    let bio: String?
-}
+final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
+    var presenter: ProfileViewPresenterProtocol?
 
-final class ProfileViewController: UIViewController {
-    
-    private let profileService = ProfileService.shared
-    
-    private var profileImageServiceObserver: NSObjectProtocol?
-    
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage (named: "user_placeholder")
@@ -51,9 +35,8 @@ final class ProfileViewController: UIViewController {
         return imageView
     }()
     
-    private lazy var userNameLabel: UILabel = {
+    lazy var userNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "Екатерина Новикова"
         label.font = UIFont.systemFont(ofSize: 23, weight: UIFont.Weight.bold)
         label.textColor = UIColor(named: "YP_White")
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -66,9 +49,8 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var loginNameLabel: UILabel = {
+    lazy var loginNameLabel: UILabel = {
         let label = UILabel()
-        label.text = "@ekaterina_nov"
         label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         label.textColor = UIColor(named: "YP_Gray")
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -82,9 +64,8 @@ final class ProfileViewController: UIViewController {
         return label
     }()
     
-    private lazy var profileTextLabel: UILabel = {
+    lazy var profileTextLabel: UILabel = {
         let label = UILabel()
-        label.text = "Hello, World!"
         label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
         label.textColor = UIColor(named: "YP_White")
         label.translatesAutoresizingMaskIntoConstraints = false
@@ -122,37 +103,16 @@ final class ProfileViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = UIColor(named: "YP_Black")
-        
         logoutButton.isHidden = false
-        updateProfileDetails(profile: profileService.profile)
-        
-        profileImageServiceObserver = NotificationCenter.default
-                    .addObserver(
-                        forName: ProfileImageService.didChangeNotification,
-                        object: nil,
-                        queue: .main
-                    ) { [weak self] _ in
-                        guard let self else { return }
-                        self.updateAvatar()
-                    }
-        updateAvatar()
+        presenter?.viewDidLoad()
     }
     
-    private func updateProfileDetails(profile: Profile?) {
-        guard let profile = profile else { return }
-        userNameLabel.text = profile.name
-        loginNameLabel.text = profile.loginName
-        profileTextLabel.text = profile.bio
-    }
-    
-    private func updateAvatar() {
-        guard
-            let profileImageURL = ProfileImageService.shared.avatarURL,
-            let url = URL(string: profileImageURL)
-        else { return }
+    func updateAvatar(_ avatarStringURL: String?) {
+        guard let avatarStringURL,
+              let avatarURL = URL(string: avatarStringURL) else { return }
 
         userPickImageView.kf.indicatorType = .activity
-        userPickImageView.kf.setImage(with: url,
+        userPickImageView.kf.setImage(with: avatarURL,
                                       placeholder: UIImage(named: "user_placeholder"),
                                       options: [.forceRefresh])
     }
@@ -160,21 +120,8 @@ final class ProfileViewController: UIViewController {
     @objc private func didTapLogoutButton() {
         
         var alertModel = AlertTwoButton.exitOrNot
-
         alertModel.completion2Button = {
-            OAuth2TokenStorage.shared.removeToken()
-            HTTPCookieStorage.shared.removeCookies(since: Date.distantPast)
-            WKWebsiteDataStore.default().fetchDataRecords(
-                ofTypes: WKWebsiteDataStore.allWebsiteDataTypes()) { records in
-                    records.forEach { record in
-                        WKWebsiteDataStore.default().removeData(
-                            ofTypes: record.dataTypes,
-                            for: [record],
-                            completionHandler: {})
-                    }
-                }
-            guard let window = UIApplication.shared.windows.first else { fatalError("Invalid Configuration") }
-            window.rootViewController = SplashViewController()
+            self.presenter?.logOut()
         }
         
         let alertPresenter = AlertPresenter(alertController: self)
