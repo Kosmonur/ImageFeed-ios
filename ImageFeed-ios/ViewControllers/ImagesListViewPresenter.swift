@@ -34,7 +34,13 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
                         queue: .main
                     ) { [weak self] _ in
                         guard let self else { return }
-                        view?.updateTableViewAnimated()
+                        
+                        let oldCount = photos.count
+                        let newCount = imagesListService.photos.count
+                        photos = imagesListService.photos
+                        if oldCount != newCount {
+                            view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
+                        }
                     }
     }
     

@@ -10,7 +10,7 @@ import Kingfisher
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
-    func updateTableViewAnimated()
+    func updateTableViewAnimated(oldCount: Int, newCount: Int)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -136,17 +136,12 @@ extension ImagesListViewController {
         presenter?.needFetchPhotosNextPage(index: indexPath.row)
     }
     
-    func updateTableViewAnimated() {
-        
-        if let oldCount = presenter?.photosCount(),
-           let newCount = presenter?.imagesListServicePhotosCount(),
-           oldCount != newCount {
-            tableView.performBatchUpdates {
-                let indexPaths = (oldCount..<newCount).map { i in
-                    IndexPath(row: i, section: 0)
-                }
-                tableView.insertRows(at: indexPaths, with: .automatic)
+    func updateTableViewAnimated(oldCount: Int, newCount: Int) {
+        tableView.performBatchUpdates {
+            let indexPaths = (oldCount..<newCount).map { i in
+                IndexPath(row: i, section: 0)
             }
+            tableView.insertRows(at: indexPaths, with: .automatic)
         }
     }
 }
