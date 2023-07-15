@@ -10,20 +10,19 @@ import Foundation
 protocol ImagesListViewPresenterProtocol {
     var view: ImagesListViewControllerProtocol? { get set }
     func viewDidLoad()
-    func needFetchPhotosNextPage(index: Int)
-    func singleImageURLString(index: Int) -> String
-    func imagesListServicePhoto(index: Int) -> Photo
+    func needFetchPhotosNextPage(_ index: Int)
+    func singleImageURLString(_ index: Int) -> String
+    func imagesListServicePhoto(_ index: Int) -> Photo
     func imagesListServicePhotosCount() -> Int
     func photosCount() -> Int
-    func changeLike(index: Int, cell: ImagesListCell)
+    func changeLike(_ index: Int, _ cell: ImagesListCell)
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
-    
+    private let imagesListService = ImagesListService()
     weak var view: ImagesListViewControllerProtocol?
     private var imagesListServiceObserver: NSObjectProtocol?
-    private let imagesListService = ImagesListService()
-    private (set) var photos: [Photo] = []
+    private var photos: [Photo] = []
 
     func viewDidLoad() {
         imagesListService.fetchPhotosNextPage()
@@ -36,25 +35,25 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
                         guard let self else { return }
                         
                         let oldCount = photos.count
-                        let newCount = imagesListService.photos.count
                         photos = imagesListService.photos
+                        let newCount = photos.count
                         if oldCount != newCount {
-                            view?.updateTableViewAnimated(oldCount: oldCount, newCount: newCount)
+                            view?.updateTableViewAnimated(oldCount, newCount)
                         }
                     }
     }
     
-    func needFetchPhotosNextPage(index: Int) {
+    func needFetchPhotosNextPage(_ index: Int) {
         if index + 1 == imagesListService.photos.count {
             imagesListService.fetchPhotosNextPage()
         }
     }
     
-    func singleImageURLString(index: Int) -> String {
+    func singleImageURLString(_ index: Int) -> String {
         imagesListService.photos[index].largeImageURL
     }
     
-    func imagesListServicePhoto(index: Int) -> Photo {
+    func imagesListServicePhoto(_ index: Int) -> Photo {
         imagesListService.photos[index]
     }
     
@@ -66,13 +65,13 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         photos.count
     }
     
-    func changeLike(index: Int, cell: ImagesListCell) {
+    func changeLike(_ index: Int, _ cell: ImagesListCell) {
         let photo = photos[index]
         imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {[weak self] result in
             guard let self else { return }
             switch result {
             case .success:
-                self.photos[index].isLiked = self.imagesListServicePhoto(index: index).isLiked
+                self.photos[index].isLiked = self.imagesListServicePhoto(index).isLiked
                 self.view?.setIsLiked(self.photos[index].isLiked, cell)
             case .failure(let error):
                 print("Ошибка обновления лайка: \(error)")

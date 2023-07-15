@@ -10,14 +10,11 @@ import Kingfisher
 
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
-    func updateTableViewAnimated(oldCount: Int, newCount: Int)
+    func updateTableViewAnimated(_ oldCount: Int, _ newCount: Int)
     func setIsLiked(_ isLiked: Bool, _ cell: ImagesListCell)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
-    
-    var presenter: ImagesListViewPresenterProtocol?
-    
     private let showSingleImageSegueIdentifier = "ShowSingleImage"
     @IBOutlet private weak var tableView: UITableView!
     
@@ -27,7 +24,8 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         formatter.dateFormat = "dd MMMM yyyy"
         return formatter
     }()
-
+    
+    var presenter: ImagesListViewPresenterProtocol?
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
@@ -41,7 +39,7 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         if segue.identifier == showSingleImageSegueIdentifier,
            let viewController = segue.destination as? SingleImageViewController,
            let indexPath = sender as? IndexPath,
-           let singleImageURLString = presenter?.singleImageURLString(index: indexPath.row) {
+           let singleImageURLString = presenter?.singleImageURLString(indexPath.row) {
             viewController.singleImageURLString = singleImageURLString
         } else {
             super.prepare(for: segue, sender: sender)
@@ -52,9 +50,8 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
 extension ImagesListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        
         guard let imagesListServicePhotosCount = presenter?.imagesListServicePhotosCount(),
-              let imageSize = presenter?.imagesListServicePhoto(index: indexPath.row).size,
+              let imageSize = presenter?.imagesListServicePhoto(indexPath.row).size,
               indexPath.row < imagesListServicePhotosCount
         else { return 0 }
 
@@ -75,7 +72,7 @@ extension ImagesListViewController: UITableViewDelegate {
 extension ImagesListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView,
                    numberOfRowsInSection section: Int) -> Int {
-        return presenter?.photosCount() ?? 0
+        presenter?.photosCount() ?? 0
     }
     
     func tableView(_ tableView: UITableView,
@@ -94,12 +91,10 @@ extension ImagesListViewController: UITableViewDataSource {
 extension ImagesListViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
-        
-        guard let photo = presenter?.imagesListServicePhoto(index: indexPath.row),
+        guard let photo = presenter?.imagesListServicePhoto(indexPath.row),
               let imageUrl = URL(string: photo.thumbImageURL) else { return }
         
         cell.cellImage.kf.indicatorType = .activity
-        
         cell.cellImage.contentMode = .center
         cell.cellImage.backgroundColor = UIColor(named: "YP_White_alfa")
         cell.isUserInteractionEnabled = false
@@ -134,10 +129,10 @@ extension ImagesListViewController {
     func tableView(_ tableView: UITableView,
                    willDisplay cell: UITableViewCell,
                    forRowAt indexPath: IndexPath) {
-        presenter?.needFetchPhotosNextPage(index: indexPath.row)
+        presenter?.needFetchPhotosNextPage(indexPath.row)
     }
     
-    func updateTableViewAnimated(oldCount: Int, newCount: Int) {
+    func updateTableViewAnimated(_ oldCount: Int, _ newCount: Int) {
         tableView.performBatchUpdates {
             let indexPaths = (oldCount..<newCount).map { i in
                 IndexPath(row: i, section: 0)
@@ -151,7 +146,7 @@ extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let index = tableView.indexPath(for: cell)?.row else { return }
         UIBlockingProgressHUD.show()
-        presenter?.changeLike(index: index, cell: cell)
+        presenter?.changeLike(index, cell)
         UIBlockingProgressHUD.dismiss()
     }
 }
