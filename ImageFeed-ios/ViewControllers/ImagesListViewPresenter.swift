@@ -15,6 +15,7 @@ protocol ImagesListViewPresenterProtocol {
     func getPhoto(index: Int) -> Photo
     func imagesListServicePhotosCount() -> Int
     func photosCount() -> Int
+    func changeLike(index: Int)
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
@@ -59,5 +60,18 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         photos.count
     }
     
+    func changeLike(index: Int) {
+        let photo = photos[index]
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {
+            result in
+            switch result {
+            case .success:
+                self.photos[index].isLiked = self.getPhoto(index: index).isLiked
+//                self.setIsLiked(self.photos[indexPath.row], cell) - переделать
+            case .failure(let error):
+                print("Ошибка обновления лайка: \(error)")
+            }
+        }
+    }
     
 } 
