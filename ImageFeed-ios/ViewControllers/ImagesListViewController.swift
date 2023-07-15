@@ -11,6 +11,7 @@ import Kingfisher
 protocol ImagesListViewControllerProtocol: AnyObject {
     var presenter: ImagesListViewPresenterProtocol? { get set }
     func updateTableViewAnimated(oldCount: Int, newCount: Int)
+    func setIsLiked(_ isLiked: Bool, _ cell: ImagesListCell)
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
@@ -53,7 +54,7 @@ extension ImagesListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         
         guard let imagesListServicePhotosCount = presenter?.imagesListServicePhotosCount(),
-              let imageSize = presenter?.getPhoto(index: indexPath.row).size,
+              let imageSize = presenter?.imagesListServicePhoto(index: indexPath.row).size,
               indexPath.row < imagesListServicePhotosCount
         else { return 0 }
 
@@ -94,7 +95,7 @@ extension ImagesListViewController {
     
     func configCell(for cell: ImagesListCell, with indexPath: IndexPath) {
         
-        guard let photo = presenter?.getPhoto(index: indexPath.row),
+        guard let photo = presenter?.imagesListServicePhoto(index: indexPath.row),
               let imageUrl = URL(string: photo.thumbImageURL) else { return }
         
         cell.cellImage.kf.indicatorType = .activity
@@ -122,11 +123,11 @@ extension ImagesListViewController {
             cell.dateLabel.text = ""
         }
         
-        setIsLiked(photo, cell)
+        setIsLiked(photo.isLiked, cell)
     }
     
-    private func setIsLiked(_ photo: Photo, _ cell: ImagesListCell) {
-        let buttonState = photo.isLiked ? "like_button_on" : "like_button_off"
+    func setIsLiked(_ isLiked: Bool, _ cell: ImagesListCell) {
+        let buttonState = isLiked ? "like_button_on" : "like_button_off"
         cell.likeButton.setImage(UIImage(named: buttonState), for: .normal)
     }
     
@@ -149,10 +150,8 @@ extension ImagesListViewController {
 extension ImagesListViewController: ImagesListCellDelegate {
     func imageListCellDidTapLike(_ cell: ImagesListCell) {
         guard let index = tableView.indexPath(for: cell)?.row else { return }
-        
         UIBlockingProgressHUD.show()
-        presenter?.changeLike(index: index)
-//        self.setIsLiked(self.photos[indexPath.row], cell) - переделать
+        presenter?.changeLike(index: index, cell: cell)
         UIBlockingProgressHUD.dismiss()
     }
 }

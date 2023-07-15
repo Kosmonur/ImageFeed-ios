@@ -12,10 +12,10 @@ protocol ImagesListViewPresenterProtocol {
     func viewDidLoad()
     func needFetchPhotosNextPage(index: Int)
     func singleImageURLString(index: Int) -> String
-    func getPhoto(index: Int) -> Photo
+    func imagesListServicePhoto(index: Int) -> Photo
     func imagesListServicePhotosCount() -> Int
     func photosCount() -> Int
-    func changeLike(index: Int)
+    func changeLike(index: Int, cell: ImagesListCell)
 }
 
 final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
@@ -54,7 +54,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         imagesListService.photos[index].largeImageURL
     }
     
-    func getPhoto(index: Int) -> Photo {
+    func imagesListServicePhoto(index: Int) -> Photo {
         imagesListService.photos[index]
     }
     
@@ -66,14 +66,14 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         photos.count
     }
     
-    func changeLike(index: Int) {
+    func changeLike(index: Int, cell: ImagesListCell) {
         let photo = photos[index]
-        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {
-            result in
+        imagesListService.changeLike(photoId: photo.id, isLike: photo.isLiked) {[weak self] result in
+            guard let self else { return }
             switch result {
             case .success:
-                self.photos[index].isLiked = self.getPhoto(index: index).isLiked
-//                self.setIsLiked(self.photos[indexPath.row], cell) - переделать
+                self.photos[index].isLiked = self.imagesListServicePhoto(index: index).isLiked
+                self.view?.setIsLiked(self.photos[index].isLiked, cell)
             case .failure(let error):
                 print("Ошибка обновления лайка: \(error)")
             }
