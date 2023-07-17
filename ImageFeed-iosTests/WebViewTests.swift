@@ -26,7 +26,7 @@ final class ImageFeed_iosTests: XCTestCase {
         XCTAssertTrue(presenter.viewDidLoadCalled) 
     }
     
-// Проверка - вызывает ли презентер после вызова presenter.viewDidLoad()
+// Проверка - вызывает ли презентер после вызова viewDidLoad()
 // метод loadRequest вьюконтроллера?
     func testPresenterCallsLoadRequest() {
         
@@ -45,7 +45,7 @@ final class ImageFeed_iosTests: XCTestCase {
         
     }
     
-// Проверка что индикатор прогресса отображается (= flase), когда прогресс меньше едиицы
+// Проверка что индикатор прогресса отображается (= false), когда прогресс меньше едиицы
     func testProgressVisibleWhenLessThenOne() {
         //given
         let authHelper = AuthHelper()

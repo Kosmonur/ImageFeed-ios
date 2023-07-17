@@ -26,21 +26,19 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
 
     func viewDidLoad() {
         imagesListService.fetchPhotosNextPage()
-        imagesListServiceObserver = NotificationCenter.default
-                    .addObserver(
-                        forName: ImagesListService.didChangeNotification,
-                        object: nil,
-                        queue: .main
-                    ) { [weak self] _ in
-                        guard let self else { return }
-                        
-                        let oldCount = photos.count
-                        photos = imagesListService.photos
-                        let newCount = photos.count
-                        if oldCount != newCount {
-                            view?.updateTableViewAnimated(oldCount, newCount)
-                        }
-                    }
+        imagesListServiceObserver = NotificationCenter.default.addObserver(
+            forName: ImagesListService.didChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            guard let self else { return }
+            let oldCount = photos.count
+            photos = imagesListService.photos
+            let newCount = photos.count
+            if oldCount != newCount {
+                view?.updateTableViewAnimated(oldCount, newCount)
+            }
+        }
     }
     
     func needFetchPhotosNextPage(_ index: Int) {
