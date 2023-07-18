@@ -84,6 +84,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
             with: UIImage(named: "logout_button") ?? UIImage(),
             target: self,
             action: #selector(Self.didTapLogoutButton))
+        button.accessibilityIdentifier = "logout_button"
         button.tintColor = UIColor(named: "YP_Red")
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)

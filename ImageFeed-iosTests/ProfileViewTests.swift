@@ -23,5 +23,4 @@ final class ProfileViewTests: XCTestCase {
             //then
             XCTAssertTrue(presenter.viewDidLoadCalled)
         }
-
 }

@@ -37,6 +37,7 @@ final class AuthViewController: UIViewController {
         
         button.backgroundColor = UIColor(named: "YP_White")
         button.setTitleColor(UIColor(named: "YP_Black"), for: .normal)
+        button.accessibilityIdentifier = "Authenticate"
         button.titleLabel?.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.bold)
         button.setTitle("Войти", for: .normal)
         button.setValue(true, forKeyPath: "layer.masksToBounds")
