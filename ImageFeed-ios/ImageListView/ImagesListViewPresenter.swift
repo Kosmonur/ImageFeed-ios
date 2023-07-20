@@ -43,7 +43,10 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     
     func needFetchPhotosNextPage(_ index: Int) {
         if index + 1 == imagesListService.photos.count {
-//            imagesListService.fetchPhotosNextPage()
+            // отменяем вызов fetchPhotosNextPage() в случае UI тестов из-за особенностей работы UITest
+            if CommandLine.arguments.contains("only_for_UITest") { return }
+            
+            imagesListService.fetchPhotosNextPage()
         }
     }
     

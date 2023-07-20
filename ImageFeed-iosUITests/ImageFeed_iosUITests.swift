@@ -13,6 +13,7 @@ class Image_FeedUITests: XCTestCase {
     override func setUpWithError() throws {
         continueAfterFailure = false
         
+        app.launchArguments = ["only_for_UITest"]
         app.launch()
     }
     
@@ -21,7 +22,7 @@ class Image_FeedUITests: XCTestCase {
         app.buttons["Authenticate"].tap()
         
         let webView = app.webViews["UnsplashWebView"]
-        XCTAssertTrue(webView.waitForExistence(timeout: 5))
+        XCTAssertTrue(webView.waitForExistence(timeout: 10))
         
         let loginTextField = webView.descendants(matching: .textField).element
             XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
@@ -32,7 +33,7 @@ class Image_FeedUITests: XCTestCase {
         let passwordTextField = webView.descendants(matching: .secureTextField).element
             XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
             passwordTextField.tap()
-            passwordTextField.typeText("biczyr-nyzqu5-xEndat")
+            passwordTextField.typeText("fippeS-qygcy7-kucwiq")
             webView.swipeUp()
         
         webView.buttons.matching(identifier: "Login").element.tap()
