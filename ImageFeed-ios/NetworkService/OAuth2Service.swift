@@ -17,7 +17,7 @@ final class OAuth2Service {
     func fetchAuthToken (
         code: String,
         completion: @escaping (Result<String, Error>) -> Void ) {
-
+            
             assert(Thread.isMainThread)
             if lastCode == code { return }
             task?.cancel()
@@ -55,9 +55,9 @@ extension OAuth2Service {
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(
             path: "/oauth/token"
-            + "?client_id=\(AccessKey)"
-            + "&&client_secret=\(SecretKey)"
-            + "&&redirect_uri=\(RedirectURI)"
+            + "?client_id=\(Constant.accesKey)"
+            + "&&client_secret=\(Constant.secretKey)"
+            + "&&redirect_uri=\(Constant.redirectURI)"
             + "&&code=\(code)"
             + "&&grant_type=authorization_code",
             httpMethod: "POST",

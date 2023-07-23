@@ -10,7 +10,7 @@ import XCTest
 
 final class ImageFeed_iosTests: XCTestCase {
     
-// Тест вызова метода viewDidLoad () в презентере
+    // Тест вызова метода viewDidLoad () в презентере
     func testViewControllerCallsViewDidLoad() {
         //given
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
@@ -21,13 +21,13 @@ final class ImageFeed_iosTests: XCTestCase {
         
         //when
         _ = viewController.view
-            
+        
         //then
         XCTAssertTrue(presenter.viewDidLoadCalled) 
     }
     
-// Проверка - вызывает ли презентер после вызова viewDidLoad()
-// метод loadRequest вьюконтроллера?
+    // Проверка - вызывает ли презентер после вызова viewDidLoad()
+    // метод loadRequest вьюконтроллера?
     func testPresenterCallsLoadRequest() {
         
         //given
@@ -39,13 +39,13 @@ final class ImageFeed_iosTests: XCTestCase {
         
         //when
         presenter.viewDidLoad()
-            
+        
         //then
         XCTAssertTrue(viewController.loadRequestCalled)
         
     }
     
-// Проверка что индикатор прогресса отображается (= false), когда прогресс меньше едиицы
+    // Проверка что индикатор прогресса отображается (= false), когда прогресс меньше едиицы
     func testProgressVisibleWhenLessThenOne() {
         //given
         let authHelper = AuthHelper()
@@ -59,21 +59,21 @@ final class ImageFeed_iosTests: XCTestCase {
         XCTAssertFalse(shouldHideProgress)
     }
     
-// Проверка что индикатор прогресса скрывается (= true), когда прогресс равен 1
-        func testProgressHiddenWhenOne() {
-            //given
-            let authHelper = AuthHelper()
-            let presenter = WebViewPresenter(authHelper: authHelper)
-            let progress: Float = 1
-            
-            //when
-            let shouldHideProgress = presenter.shouldHideProgress(for: progress)
-            
-            //then
-            XCTAssertTrue(shouldHideProgress)
-        }
+    // Проверка что индикатор прогресса скрывается (= true), когда прогресс равен 1
+    func testProgressHiddenWhenOne() {
+        //given
+        let authHelper = AuthHelper()
+        let presenter = WebViewPresenter(authHelper: authHelper)
+        let progress: Float = 1
+        
+        //when
+        let shouldHideProgress = presenter.shouldHideProgress(for: progress)
+        
+        //then
+        XCTAssertTrue(shouldHideProgress)
+    }
     
-// Проверка, что ссылка, полученная из authURL, содержит все необходимые компоненты.
+    // Проверка, что ссылка, полученная из authURL, содержит все необходимые компоненты.
     func testAuthHelperAuthURL() {
         //given
         let configuration = AuthConfiguration.standard
@@ -91,7 +91,7 @@ final class ImageFeed_iosTests: XCTestCase {
         XCTAssertTrue(urlString.contains(configuration.accessScope))
     }
     
-// Проверка, что AuthHelper корректно распознаёт код из ссылки.
+    // Проверка, что AuthHelper корректно распознаёт код из ссылки.
     func testCodeFromURL() {
         //given
         var urlComponents = URLComponents(string: "https://unsplash.com/oauth/authorize/native")!

@@ -25,16 +25,18 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(webView.waitForExistence(timeout: 10))
         
         let loginTextField = webView.descendants(matching: .textField).element
-            XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
+        XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
-            loginTextField.typeText("<e-mail>")
-            webView.swipeUp()
+        loginTextField.typeText("<e-mail>")
+        webView.swipeUp()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
-            XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
-            passwordTextField.tap()
-            passwordTextField.typeText("<password>")
-            webView.swipeUp()
+        XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
+        passwordTextField.tap()
+        passwordTextField.typeText("<password>")
+        if app.keyboards.element(boundBy: 0).exists {
+            app.toolbars.buttons["Done"].tap()
+        }
         
         webView.buttons.matching(identifier: "Login").element.tap()
         
@@ -42,7 +44,7 @@ class Image_FeedUITests: XCTestCase {
         let cell = tablesQuery.children(matching: .cell).element(boundBy: 0)
         
         XCTAssertTrue(cell.waitForExistence(timeout: 5))
-
+        
     }
     
     func testFeed() throws {
@@ -61,7 +63,7 @@ class Image_FeedUITests: XCTestCase {
         let cellToLikeButton = cellToLike.buttons["like_button"]
         cellToLikeButton.tap()
         sleep(1)
-
+        
         cellToLikeButton.tap()
         sleep(1)
         
@@ -78,7 +80,7 @@ class Image_FeedUITests: XCTestCase {
         
         image.pinch(withScale: 2, velocity: 2)
         XCTAssertTrue(image.waitForExistence(timeout: 5))
-
+        
         image.pinch(withScale: 0.5, velocity: -2)
         XCTAssertTrue(image.waitForExistence(timeout: 5))
         
@@ -89,12 +91,12 @@ class Image_FeedUITests: XCTestCase {
     func testProfile() throws {
         XCTAssertTrue(app.waitForExistence(timeout: 5))
         app.tabBars.buttons.element(boundBy: 1).tap()
-       
+        
         XCTAssertTrue(app.staticTexts["Aleksandr Pichugin"].exists)
         XCTAssertTrue(app.staticTexts["@kosmonur"].exists)
-
+        
         app.buttons["logout_button"].tap()
-
+        
         app.alerts["Пока, пока!"].scrollViews.otherElements.buttons["Да"].tap()
         XCTAssertTrue(app.buttons["Authenticate"].waitForExistence(timeout: 1))
     }

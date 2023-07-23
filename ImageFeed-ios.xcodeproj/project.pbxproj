@@ -13,7 +13,6 @@
 		F20B3A2E2A3E03FC00685FAF /* ProfileImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20B3A2D2A3E03FC00685FAF /* ProfileImageService.swift */; };
 		F20B3A342A3EF04300685FAF /* NetworkExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F20B3A332A3EF04300685FAF /* NetworkExtension.swift */; };
 		F2259F132A098B2A003F7344 /* ImagesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F2259F122A098B2A003F7344 /* ImagesListCell.swift */; };
-		F24D40E02A65E1C30085695C /* ProfileViewControllerSpy.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24D40DF2A65E1C30085695C /* ProfileViewControllerSpy.swift */; };
 		F24D40E82A670FE00085695C /* ImageFeed_iosUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24D40E72A670FE00085695C /* ImageFeed_iosUITests.swift */; };
 		F24F4F012A07B8CA007AC749 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F4F002A07B8CA007AC749 /* AppDelegate.swift */; };
 		F24F4F032A07B8CA007AC749 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F24F4F022A07B8CA007AC749 /* SceneDelegate.swift */; };
@@ -75,7 +74,6 @@
 		F20B3A2D2A3E03FC00685FAF /* ProfileImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageService.swift; sourceTree = "<group>"; };
 		F20B3A332A3EF04300685FAF /* NetworkExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkExtension.swift; sourceTree = "<group>"; };
 		F2259F122A098B2A003F7344 /* ImagesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagesListCell.swift; sourceTree = "<group>"; };
-		F24D40DF2A65E1C30085695C /* ProfileViewControllerSpy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewControllerSpy.swift; sourceTree = "<group>"; };
 		F24D40E52A670FE00085695C /* ImageFeed-iosUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "ImageFeed-iosUITests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		F24D40E72A670FE00085695C /* ImageFeed_iosUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageFeed_iosUITests.swift; sourceTree = "<group>"; };
 		F24F4EFD2A07B8CA007AC749 /* ImageFeed-ios.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ImageFeed-ios.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,7 +211,6 @@
 				F2898F4B2A5C92950028C978 /* WebViewPresenterSpy.swift */,
 				F29D65B72A63EE42000DF7E2 /* ProfileViewTests.swift */,
 				F29D65C32A64994D000DF7E2 /* ProfileViewPresenterSpy.swift */,
-				F24D40DF2A65E1C30085695C /* ProfileViewControllerSpy.swift */,
 			);
 			path = "ImageFeed-iosTests";
 			sourceTree = "<group>";
@@ -475,7 +472,6 @@
 				F2898F432A5C7CC50028C978 /* WebViewTests.swift in Sources */,
 				F2898F4A2A5C91F00028C978 /* WebViewViewControllerSpy.swift in Sources */,
 				F2898F4C2A5C92950028C978 /* WebViewPresenterSpy.swift in Sources */,
-				F24D40E02A65E1C30085695C /* ProfileViewControllerSpy.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -23,16 +23,16 @@ class AuthHelper: AuthHelperProtocol {
         let url = authURL()
         return URLRequest(url: url)
     }
-
+    
     func authURL() -> URL {
-        var urlComponents = URLComponents(string: configuration.authURLString)!
+        var urlComponents = URLComponents(string: configuration.authURLString) ?? URLComponents()
         urlComponents.queryItems = [
             URLQueryItem(name: "client_id", value: configuration.accessKey),
             URLQueryItem(name: "redirect_uri", value: configuration.redirectURI),
             URLQueryItem(name: "response_type", value: "code"),
             URLQueryItem(name: "scope", value: configuration.accessScope)
         ]
-        return urlComponents.url!
+        return urlComponents.url ?? URL(fileURLWithPath: "")
     }
     
     func code(from url: URL) -> String? {
@@ -45,6 +45,6 @@ class AuthHelper: AuthHelperProtocol {
         } else {
             return nil
         }
-    } 
+    }
     
 }

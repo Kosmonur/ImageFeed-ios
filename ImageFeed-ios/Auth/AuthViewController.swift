@@ -43,7 +43,7 @@ final class AuthViewController: UIViewController {
         button.setValue(true, forKeyPath: "layer.masksToBounds")
         button.setValue(16, forKeyPath: "layer.cornerRadius")
         button.addTarget(self, action: #selector(didTapLoginButton), for: .touchUpInside)
-       
+        
         button.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(button)
         NSLayoutConstraint.activate([
@@ -63,7 +63,7 @@ final class AuthViewController: UIViewController {
         view.backgroundColor = UIColor(named: "YP_Black")
         authLogoImageView.isHidden = false
         loginButton.isHidden = false
-
+        
     }
 }
 
@@ -74,7 +74,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             self?.fetchOAuthToken(authCode: code)
         }
     }
-
+    
     private func fetchOAuthToken(authCode code: String) {
         UIBlockingProgressHUD.show()
         oAuth2Service.fetchAuthToken(code: code) { [weak self] result in
@@ -104,7 +104,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
             assertionFailure("Ошибка инициализации WebViewViewController")
             return
         }
-
+        
         let authHelper = AuthHelper()
         let webViewPresenter = WebViewPresenter(authHelper: authHelper)
         webViewViewController.presenter = webViewPresenter
@@ -113,6 +113,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
         
         webViewViewController.modalPresentationStyle = .fullScreen
         present(webViewViewController, animated: true)
-        }
+    }
 }
 

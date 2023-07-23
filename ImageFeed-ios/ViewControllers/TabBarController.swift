@@ -6,7 +6,7 @@
 //
 
 import UIKit
- 
+
 final class TabBarController: UITabBarController {
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -23,7 +23,7 @@ final class TabBarController: UITabBarController {
             title: nil,
             image: UIImage(named: "tab_editorial_active"),
             selectedImage: nil)
-
+        
         let imagesListViewPresenter = ImagesListViewPresenter()
         imagesListViewController.presenter = imagesListViewPresenter
         imagesListViewPresenter.view = imagesListViewController

@@ -7,15 +7,17 @@
 
 import Foundation
 
-//let AccessKey = "8RDPQgEIwoBrCyDpQaK1jKNAFbxDtcyaXZXvUQi7LoQ"
-//let SecretKey = "l6ToeHQoSP1o18sm2IAexqIQABmxpI0dcmpLKGtYjP4"
-
-let AccessKey = "Re1sBTF90r3BFZsWf-Pi94QgT263uUipanZxfDBPRVw"
-let SecretKey = "8SgsJRcmns98nseYiawh8gpHXwfmPCM-V_ePZewL4lU"
-let RedirectURI = "urn:ietf:wg:oauth:2.0:oob"
-let AccessScope = "public+read_user+write_likes"
-let DefaultBaseURL = URL(string: "https://api.unsplash.com")!
-let UnsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+enum Constant {
+    static let accesKey = "8RDPQgEIwoBrCyDpQaK1jKNAFbxDtcyaXZXvUQi7LoQ"
+    static let secretKey = "l6ToeHQoSP1o18sm2IAexqIQABmxpI0dcmpLKGtYjP4"
+    
+//    static let accesKey = "Re1sBTF90r3BFZsWf-Pi94QgT263uUipanZxfDBPRVw"
+//    static let secretKey = "8SgsJRcmns98nseYiawh8gpHXwfmPCM-V_ePZewL4lU"
+    static let redirectURI = "urn:ietf:wg:oauth:2.0:oob"
+    static let accessScope = "public+read_user+write_likes"
+    static let defaultBaseURL = URL(string: "https://api.unsplash.com")!
+    static let unsplashAuthorizeURLString = "https://unsplash.com/oauth/authorize"
+}
 
 struct AuthConfiguration {
     let accessKey: String
@@ -35,11 +37,11 @@ struct AuthConfiguration {
     }
     
     static var standard: AuthConfiguration {
-        return AuthConfiguration(accessKey: AccessKey,
-                                 secretKey: SecretKey,
-                                 redirectURI: RedirectURI,
-                                 accessScope: AccessScope,
-                                 authURLString: UnsplashAuthorizeURLString,
-                                 defaultBaseURL: DefaultBaseURL)
+        return AuthConfiguration(accessKey: Constant.accesKey,
+                                 secretKey: Constant.secretKey,
+                                 redirectURI: Constant.redirectURI,
+                                 accessScope: Constant.accessScope,
+                                 authURLString: Constant.unsplashAuthorizeURLString,
+                                 defaultBaseURL: Constant.defaultBaseURL)
     }
 }

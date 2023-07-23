@@ -18,7 +18,7 @@ public protocol ProfileViewControllerProtocol: AnyObject {
 
 final class ProfileViewController: UIViewController, ProfileViewControllerProtocol {
     var presenter: ProfileViewPresenterProtocol?
-
+    
     private lazy var userPickImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage (named: "user_placeholder")
@@ -67,14 +67,14 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     lazy var profileTextLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 13, weight: UIFont.Weight.regular)
+        label.numberOfLines = 0
         label.textColor = UIColor(named: "YP_White")
         label.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(label)
         NSLayoutConstraint.activate([
             label.topAnchor.constraint(equalTo: loginNameLabel.bottomAnchor, constant: 8),
             label.leadingAnchor.constraint(equalTo: userPickImageView.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: userNameLabel.trailingAnchor),
-            label.heightAnchor.constraint(equalToConstant: 18)
+            label.trailingAnchor.constraint(equalTo: userNameLabel.trailingAnchor)
         ])
         return label
     }()
@@ -111,7 +111,7 @@ final class ProfileViewController: UIViewController, ProfileViewControllerProtoc
     func updateAvatar(_ avatarStringURL: String?) {
         guard let avatarStringURL,
               let avatarURL = URL(string: avatarStringURL) else { return }
-
+        
         userPickImageView.kf.indicatorType = .activity
         userPickImageView.kf.setImage(with: avatarURL,
                                       placeholder: UIImage(named: "user_placeholder"),

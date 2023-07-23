@@ -10,17 +10,17 @@ import XCTest
 
 final class ProfileViewTests: XCTestCase {
     
-// Тест вызова метода viewDidLoad () в презентере ProfileViewPresenter
+    // Тест вызова метода viewDidLoad () в презентере ProfileViewPresenter
     func testViewControllerCallsViewDidLoad() {
         
         //given
         let viewController = ProfileViewController()
         let presenter = ProfileViewPresenterSpy()
         viewController.presenter = presenter
-            //when
-            _ = viewController.view
-                
-            //then
-            XCTAssertTrue(presenter.viewDidLoadCalled)
-        }
+        //when
+        _ = viewController.view
+        
+        //then
+        XCTAssertTrue(presenter.viewDidLoadCalled)
+    }
 }

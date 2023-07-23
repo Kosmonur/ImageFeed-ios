@@ -23,7 +23,7 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
     weak var view: ImagesListViewControllerProtocol?
     private var imagesListServiceObserver: NSObjectProtocol?
     private var photos: [Photo] = []
-
+    
     func viewDidLoad() {
         imagesListService.fetchPhotosNextPage()
         imagesListServiceObserver = NotificationCenter.default.addObserver(
@@ -45,7 +45,6 @@ final class ImagesListViewPresenter: ImagesListViewPresenterProtocol {
         if index + 1 == imagesListService.photos.count {
             // отменяем вызов fetchPhotosNextPage() в случае UI тестов из-за особенностей работы UITest
             if CommandLine.arguments.contains("only_for_UITest") { return }
-            
             imagesListService.fetchPhotosNextPage()
         }
     }

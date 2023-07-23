@@ -59,7 +59,7 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     
     func fetchPhotosNextPage(){
-
+        
         assert(Thread.isMainThread)
         task?.cancel()
         
@@ -99,7 +99,7 @@ final class ImagesListService {
         
         assert(Thread.isMainThread)
         liketask?.cancel()
-
+        
         let httpMethod = isLike ? "DELETE" : "POST"
         let request = URLRequest.makeHTTPRequest(path: "/photos/\(photoId)/like", httpMethod: httpMethod)
         

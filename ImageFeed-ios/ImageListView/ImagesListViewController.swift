@@ -54,7 +54,7 @@ extension ImagesListViewController: UITableViewDelegate {
               let imageSize = presenter?.imagesListServicePhoto(indexPath.row).size,
               indexPath.row < imagesListServicePhotosCount
         else { return 0 }
-
+        
         let imageInsets = UIEdgeInsets(top: 4, left: 16, bottom: 4, right: 16)
         let imageViewWidth = tableView.bounds.width - imageInsets.left - imageInsets.right
         let imageWidth = imageSize.width
@@ -109,7 +109,7 @@ extension ImagesListViewController {
             }
             cell.isUserInteractionEnabled = true
         }
-
+        
         cell.setupGradient()
         
         if let date = photo.createdAt {

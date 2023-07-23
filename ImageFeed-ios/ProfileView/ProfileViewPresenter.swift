@@ -15,7 +15,7 @@ public protocol ProfileViewPresenterProtocol {
 }
 
 final class ProfileViewPresenter: ProfileViewPresenterProtocol {
-
+    
     weak var view: ProfileViewControllerProtocol?
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
@@ -30,10 +30,10 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
             forName: ProfileImageService.didChangeNotification,
             object: nil,
             queue: .main) { [weak self] _ in
-            guard let self else { return }
+                guard let self else { return }
                 view?.updateAvatar(profileImageService.avatarURL)
             }
-
+        
         view?.updateAvatar(profileImageService.avatarURL)
         view?.userNameLabel.text = profile.name
         view?.loginNameLabel.text = profile.loginName

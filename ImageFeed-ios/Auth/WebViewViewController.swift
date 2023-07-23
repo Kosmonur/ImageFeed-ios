@@ -26,10 +26,6 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIProgressView!
     
-    @IBAction func didTapBackButton(_ sender: Any?) {
-        delegate?.webViewViewControllerDidCancel(self)
-    }
-    
     weak var delegate: WebViewViewControllerDelegate?
     
     private var estimatedProgressObservation: NSKeyValueObservation?
@@ -69,11 +65,15 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
     }
     
     func setProgressValue(_ newValue: Float) {
-        progressView.progress = newValue
+        progressView.setProgress(newValue,animated: true)
     }
-
+    
     func setProgressHidden(_ isHidden: Bool) {
         progressView.isHidden = isHidden
+    }
+    
+    @IBAction func didTapBackButton(_ sender: Any?) {
+        delegate?.webViewViewControllerDidCancel(self)
     }
 }
 
@@ -86,9 +86,9 @@ extension WebViewViewController: WKNavigationDelegate {
         if let code = code(from: navigationAction) {
             delegate?.webViewViewController(self, didAuthenticateWithCode: code)
             decisionHandler(.cancel)
-          } else {
-                decisionHandler(.allow)
-            }
+        } else {
+            decisionHandler(.allow)
+        }
     }
     
     private func code(from navigationAction: WKNavigationAction) -> String? {

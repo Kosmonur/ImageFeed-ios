@@ -37,15 +37,15 @@ struct AlertTwoButton {
                               completion1Button: {},
                               completion2Button: {})
     }
-        
-     static var exitOrNot: AlertTwoButton {
-            return AlertTwoButton(title: "Пока, пока!",
-                                  message: "Уверены, что хотите выйти?",
-                                  button1Text: "Нет",
-                                  button2Text: "Да",
-                                  completion1Button: {},
-                                  completion2Button: {})
-     }
+    
+    static var exitOrNot: AlertTwoButton {
+        return AlertTwoButton(title: "Пока, пока!",
+                              message: "Уверены, что хотите выйти?",
+                              button1Text: "Нет",
+                              button2Text: "Да",
+                              completion1Button: {},
+                              completion2Button: {})
+    }
 }
 
 

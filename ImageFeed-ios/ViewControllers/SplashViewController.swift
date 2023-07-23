@@ -90,6 +90,6 @@ extension SplashViewController: AuthViewControllerDelegate {
         authViewController.delegate = self
         authViewController.modalPresentationStyle = .fullScreen
         present(authViewController, animated: true)
-      }
-
+    }
+    
 }
