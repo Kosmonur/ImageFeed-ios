@@ -9,6 +9,7 @@ import ImageFeed_ios
 import Foundation
 
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
+
     var viewDidLoadCalled: Bool = false
     
     var view: WebViewViewControllerProtocol?
@@ -24,4 +25,8 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
     func code(from url: URL) -> String? {
         return nil
     }
+    
+    func webViewViewControllerDidCancel() {
+    }
+    
 }

@@ -10,7 +10,6 @@ import WebKit
 
 protocol WebViewViewControllerDelegate: AnyObject {
     func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
 }
 
 public protocol WebViewViewControllerProtocol: AnyObject {
@@ -18,6 +17,7 @@ public protocol WebViewViewControllerProtocol: AnyObject {
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
     func setProgressHidden(_ isHidden: Bool)
+    func webViewViewControllerDismiss()
 }
 
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
@@ -72,8 +72,12 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         progressView.isHidden = isHidden
     }
     
+    func webViewViewControllerDismiss() {
+        dismiss(animated: true)
+    }
+    
     @IBAction func didTapBackButton(_ sender: Any?) {
-        delegate?.webViewViewControllerDidCancel(self)
+        presenter?.webViewViewControllerDidCancel()
     }
 }
 

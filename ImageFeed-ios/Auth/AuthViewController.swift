@@ -92,10 +92,6 @@ extension AuthViewController: WebViewViewControllerDelegate {
         }
     }
     
-    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
-        dismiss(animated: true)
-    }
-    
     @objc private func didTapLoginButton() {
         
         let storyboard = UIStoryboard(name: "Main", bundle: .main)

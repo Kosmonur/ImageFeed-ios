@@ -12,6 +12,7 @@ public protocol WebViewPresenterProtocol {
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
     func code(from url: URL) -> String?
+    func webViewViewControllerDidCancel()
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
@@ -39,6 +40,11 @@ final class WebViewPresenter: WebViewPresenterProtocol {
     
     func code(from url: URL) -> String? {
         authHelper.code(from: url)
+    }
+    
+    func webViewViewControllerDidCancel() {
+        view?.webViewViewControllerDismiss()
+        
     }
     
     func shouldHideProgress(for value: Float) -> Bool {
