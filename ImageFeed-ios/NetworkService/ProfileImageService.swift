@@ -23,7 +23,7 @@ final class ProfileImageService {
     private var task: URLSessionTask?
     private var lastUserName: String?
     private var lastToken: String?
-
+    
     func fetchProfileImageURL(
         username: String,
         _ completion: @escaping (Result<String, Error>) -> Void) {
@@ -31,13 +31,13 @@ final class ProfileImageService {
             guard let token = OAuth2TokenStorage.shared.token else { return }
             
             assert(Thread.isMainThread)
-
+            
             if (lastUserName == username) || (lastToken == token) { return }
             task?.cancel()
             
             lastUserName = username
             lastToken = token
-
+            
             let request = URLRequest.makeHTTPRequest(path: "/users/\(username)", httpMethod: "GET")
             let task = urlSession.objectTask(for: request) { [weak self] (result: Result<UserResult, Error>) in
                 guard let self else { return }

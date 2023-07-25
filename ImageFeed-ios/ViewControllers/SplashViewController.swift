@@ -11,7 +11,6 @@ final class SplashViewController: UIViewController {
     
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
-    private let oauth2Service = OAuth2Service.shared
     private let auth2TokenStorage = OAuth2TokenStorage.shared
     
     private lazy var splashLogoImageView: UIImageView = {
@@ -74,14 +73,11 @@ extension SplashViewController: AuthViewControllerDelegate {
                 }
                 switchToTabBarController()
             case .failure:
-                let alertModel = AlertModel(
-                    title: "Что-то пошло не так(",
-                    message: "Не удалось войти в систему",
-                    buttonText: "ОК") { [weak self] in
-                        guard let self else { return }
-                        
-                        showAuthViewController()
-                    }
+                var alertModel = AlertOneButton.notLogin
+                alertModel.completion = { [weak self] in
+                    guard let self else { return }
+                    showAuthViewController()
+                }
                 let alertPresenter = AlertPresenter(alertController: self)
                 alertPresenter.showAlert(alertModel: alertModel)
             }
@@ -90,10 +86,10 @@ extension SplashViewController: AuthViewControllerDelegate {
     }
     
     func showAuthViewController() {
-          let authViewController = AuthViewController()
-          authViewController.delegate = self
-          authViewController.modalPresentationStyle = .fullScreen
-          present(authViewController, animated: true)
-      }
-
+        let authViewController = AuthViewController()
+        authViewController.delegate = self
+        authViewController.modalPresentationStyle = .fullScreen
+        present(authViewController, animated: true)
+    }
+    
 }

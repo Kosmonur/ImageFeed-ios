@@ -59,11 +59,11 @@ final class ImagesListService {
     private var lastLoadedPage: Int?
     
     func fetchPhotosNextPage(){
-
+        
         assert(Thread.isMainThread)
         task?.cancel()
         
-        let nextPage = lastLoadedPage ?? 0 + 1
+        let nextPage = (lastLoadedPage ?? 0) + 1
         
         let request = URLRequest.makeHTTPRequest(path: "/photos?page=\(nextPage)&&per_page=10", httpMethod: "GET")
         let task = urlSession.objectTask(for: request) { [weak self] (result: Result<[PhotoResult], Error>) in
@@ -99,7 +99,7 @@ final class ImagesListService {
         
         assert(Thread.isMainThread)
         liketask?.cancel()
-
+        
         let httpMethod = isLike ? "DELETE" : "POST"
         let request = URLRequest.makeHTTPRequest(path: "/photos/\(photoId)/like", httpMethod: httpMethod)
         
