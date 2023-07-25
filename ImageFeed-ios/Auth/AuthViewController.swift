@@ -67,9 +67,9 @@ final class AuthViewController: UIViewController {
     }
 }
 
-extension AuthViewController: WebViewViewControllerDelegate {
+extension AuthViewController: WebViewPresenterDelegate {
     
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
+    func didAuthenticateWithCode(_ vc: WebViewViewController, didAuthenticateWithCode code: String) {
         vc.dismiss(animated: true) {[weak self] in
             self?.fetchOAuthToken(authCode: code)
         }
@@ -105,7 +105,7 @@ extension AuthViewController: WebViewViewControllerDelegate {
         let webViewPresenter = WebViewPresenter(authHelper: authHelper)
         webViewViewController.presenter = webViewPresenter
         webViewPresenter.view = webViewViewController
-        webViewViewController.delegate = self
+        webViewPresenter.delegate = self
         
         webViewViewController.modalPresentationStyle = .fullScreen
         present(webViewViewController, animated: true)

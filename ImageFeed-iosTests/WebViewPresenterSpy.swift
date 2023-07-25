@@ -5,14 +5,13 @@
 //  Created by Александр Пичугин on 10.07.2023.
 //
 
+@testable import ImageFeed_ios
 import ImageFeed_ios
 import Foundation
 
 final class WebViewPresenterSpy: WebViewPresenterProtocol {
-
+    var view: ImageFeed_ios.WebViewViewControllerProtocol?
     var viewDidLoadCalled: Bool = false
-    
-    var view: WebViewViewControllerProtocol?
     
     func viewDidLoad() {
         viewDidLoadCalled = true
@@ -26,7 +25,12 @@ final class WebViewPresenterSpy: WebViewPresenterProtocol {
         return nil
     }
     
-    func webViewViewControllerDidCancel() {
+    func webViewViewControllerDidCancel(_ vc: ImageFeed_ios.WebViewViewController) {
+        
+    }
+    
+    func didAuthenticateWithCode(_ vc: ImageFeed_ios.WebViewViewController, _ code: String) {
+        
     }
     
 }

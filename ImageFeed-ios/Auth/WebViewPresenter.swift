@@ -7,16 +7,23 @@
 
 import Foundation
 
-public protocol WebViewPresenterProtocol {
+protocol WebViewPresenterDelegate: AnyObject {
+    func didAuthenticateWithCode(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
+}
+
+protocol WebViewPresenterProtocol {
     var view: WebViewViewControllerProtocol? { get set }
     func viewDidLoad()
     func didUpdateProgressValue(_ newValue: Double)
     func code(from url: URL) -> String?
-    func webViewViewControllerDidCancel()
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController)
+    func didAuthenticateWithCode(_ vc: WebViewViewController, _ code: String)
 }
 
 final class WebViewPresenter: WebViewPresenterProtocol {
+    
     weak var view: WebViewViewControllerProtocol?
+    weak var delegate: WebViewPresenterDelegate?
     
     var authHelper: AuthHelperProtocol
     
@@ -42,12 +49,15 @@ final class WebViewPresenter: WebViewPresenterProtocol {
         authHelper.code(from: url)
     }
     
-    func webViewViewControllerDidCancel() {
-        view?.webViewViewControllerDismiss()
-        
+    func webViewViewControllerDidCancel(_ vc: WebViewViewController) {
+        vc.dismiss(animated: true)
     }
     
     func shouldHideProgress(for value: Float) -> Bool {
         abs(value - 1.0) <= 0.0001
+    }
+    
+    func didAuthenticateWithCode(_ vc: WebViewViewController, _ code: String) {
+        delegate?.didAuthenticateWithCode(vc, didAuthenticateWithCode: code)
     }
 }

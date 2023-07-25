@@ -14,15 +14,17 @@ protocol ImagesListCellDelegate: AnyObject {
 
 final class ImagesListCell: UITableViewCell {
     static let reuseIdentifier = "ImagesListCell"
+    weak var delegate: ImagesListCellDelegate?
+    
     @IBOutlet weak var cellImage: UIImageView!
     @IBOutlet weak var likeButton: UIButton!
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var gradientView: UIView!
     private var gradientNotAdded = true
-    weak var delegate: ImagesListCellDelegate?
     
-    @IBAction func likeButtonClicked() {
-        delegate?.imageListCellDidTapLike(self)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        cellImage.kf.cancelDownloadTask()
     }
     
     func setupGradient() {
@@ -43,9 +45,7 @@ final class ImagesListCell: UITableViewCell {
         gradientNotAdded = false
     }
     
-    override func prepareForReuse() {
-        super.prepareForReuse()
-        
-        cellImage.kf.cancelDownloadTask()
+    @IBAction func likeButtonClicked() {
+        delegate?.imageListCellDidTapLike(self)
     }
 }

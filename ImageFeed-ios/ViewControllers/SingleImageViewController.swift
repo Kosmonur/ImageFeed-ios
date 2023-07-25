@@ -22,18 +22,6 @@ final class SingleImageViewController: UIViewController {
     @IBOutlet private weak var imageView: UIImageView!
     @IBOutlet private weak var scrollView: UIScrollView!
     
-    @IBAction func didTapBackButton() {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    @IBAction func didTapShareButton() {
-        let share = UIActivityViewController(
-            activityItems: [image as Any],
-            applicationActivities: nil
-        )
-        present(share, animated: true, completion: nil)
-    }
-    
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {
@@ -109,6 +97,18 @@ final class SingleImageViewController: UIViewController {
         
         let alertPresenter = AlertPresenter(alertController: self)
         alertPresenter.showAlert(alertModel: alertModel)
+    }
+    
+    @IBAction func didTapBackButton() {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    @IBAction func didTapShareButton() {
+        let share = UIActivityViewController(
+            activityItems: [image as Any],
+            applicationActivities: nil
+        )
+        present(share, animated: true, completion: nil)
     }
     
     @objc func onSingleTap(gestureRecognizer: UITapGestureRecognizer) {

@@ -20,7 +20,6 @@ final class ProfileViewPresenter: ProfileViewPresenterProtocol {
     private let profileService = ProfileService.shared
     private let profileImageService = ProfileImageService.shared
     private var avatarStringURL: String?
-    
     private var profileImageServiceObserver: NSObjectProtocol?
     
     func viewDidLoad() {

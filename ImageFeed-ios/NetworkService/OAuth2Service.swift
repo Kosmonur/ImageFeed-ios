@@ -9,6 +9,13 @@ import Foundation
 
 final class OAuth2Service {
     
+    private struct OAuthTokenResponseBody: Decodable {
+        let accessToken: String
+        let tokenType: String
+        let scope: String
+        let createdAt: Int
+    }
+    
     static let shared = OAuth2Service()
     private let urlSession = URLSession.shared
     private var task: URLSessionTask?
@@ -41,16 +48,6 @@ final class OAuth2Service {
             self.task = task
             task.resume()
         }
-}
-
-extension OAuth2Service {
-    
-    private struct OAuthTokenResponseBody: Decodable {
-        let accessToken: String
-        let tokenType: String
-        let scope: String
-        let createdAt: Int
-    }
     
     private func authTokenRequest(code: String) -> URLRequest {
         URLRequest.makeHTTPRequest(

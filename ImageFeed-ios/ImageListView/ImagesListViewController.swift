@@ -15,9 +15,9 @@ protocol ImagesListViewControllerProtocol: AnyObject {
 }
 
 final class ImagesListViewController: UIViewController, ImagesListViewControllerProtocol {
-    private let showSingleImageSegueIdentifier = "ShowSingleImage"
+    var presenter: ImagesListViewPresenterProtocol?
     @IBOutlet private weak var tableView: UITableView!
-    
+    private let showSingleImageSegueIdentifier = "ShowSingleImage"
     private lazy var dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.locale = Locale(identifier: "ru_RU")
@@ -25,7 +25,6 @@ final class ImagesListViewController: UIViewController, ImagesListViewController
         return formatter
     }()
     
-    var presenter: ImagesListViewPresenterProtocol?
     override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override func viewDidLoad() {

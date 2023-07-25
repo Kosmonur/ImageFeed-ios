@@ -8,25 +8,20 @@
 import UIKit
 import WebKit
 
-protocol WebViewViewControllerDelegate: AnyObject {
-    func webViewViewController(_ vc: WebViewViewController, didAuthenticateWithCode code: String)
-}
-
-public protocol WebViewViewControllerProtocol: AnyObject {
+protocol WebViewViewControllerProtocol: AnyObject {
     var presenter: WebViewPresenterProtocol? { get set }
     func load(request: URLRequest)
     func setProgressValue(_ newValue: Float)
     func setProgressHidden(_ isHidden: Bool)
-    func webViewViewControllerDismiss()
 }
 
 final class WebViewViewController: UIViewController, WebViewViewControllerProtocol {
+    
     var presenter: WebViewPresenterProtocol?
     
     @IBOutlet private weak var webView: WKWebView!
     @IBOutlet private weak var progressView: UIProgressView!
     
-    weak var delegate: WebViewViewControllerDelegate?
     
     private var estimatedProgressObservation: NSKeyValueObservation?
     
@@ -72,12 +67,8 @@ final class WebViewViewController: UIViewController, WebViewViewControllerProtoc
         progressView.isHidden = isHidden
     }
     
-    func webViewViewControllerDismiss() {
-        dismiss(animated: true)
-    }
-    
     @IBAction func didTapBackButton(_ sender: Any?) {
-        presenter?.webViewViewControllerDidCancel()
+        presenter?.webViewViewControllerDidCancel(self)
     }
 }
 
@@ -89,7 +80,7 @@ extension WebViewViewController: WKNavigationDelegate {
     ) {
         if let url = navigationAction.request.url,
            let code = presenter?.code(from: url) {
-            delegate?.webViewViewController(self, didAuthenticateWithCode: code)
+            presenter?.didAuthenticateWithCode(self, code)
             decisionHandler(.cancel)
         } else {
             decisionHandler(.allow)

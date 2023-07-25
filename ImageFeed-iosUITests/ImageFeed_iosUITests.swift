@@ -17,6 +17,16 @@ class Image_FeedUITests: XCTestCase {
         app.launch()
     }
     
+    func dismissKeyboardIfPresent() {
+        if app.keyboards.element(boundBy: 0).exists {
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                app.keyboards.buttons["Hide keyboard"].tap()
+            } else {
+                app.toolbars.buttons["Done"].tap()
+            }
+        }
+    }
+    
     func testAuth() throws {
         
         app.buttons["Authenticate"].tap()
@@ -28,15 +38,13 @@ class Image_FeedUITests: XCTestCase {
         XCTAssertTrue(loginTextField.waitForExistence(timeout: 5))
         loginTextField.tap()
         loginTextField.typeText("<e-mail>")
-        webView.swipeUp()
+        dismissKeyboardIfPresent()
         
         let passwordTextField = webView.descendants(matching: .secureTextField).element
         XCTAssertTrue(passwordTextField.waitForExistence(timeout: 5))
         passwordTextField.tap()
         passwordTextField.typeText("<password>")
-        if app.keyboards.element(boundBy: 0).exists {
-            app.toolbars.buttons["Done"].tap()
-        }
+        dismissKeyboardIfPresent()
         
         webView.buttons.matching(identifier: "Login").element.tap()
         
