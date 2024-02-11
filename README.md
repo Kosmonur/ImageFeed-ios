@@ -14,6 +14,9 @@ ImageFeed - это приложение для просмотра фотогра
 
 <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/3.png"> <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/4.png">
 
+# Видеодемонстрация работы приложения
+- [Видео](https://disk.yandex.ru/i/mtfpRt7M82DV-Q)
+
 ## Стек
 - архитектура MVP
 - вёрстка сторибордом и кодом с Auto Layout [Дизайн в Figma.](https://www.figma.com/file/HyDfKh5UVPOhPZIhBqIm3q/Image-Feed-(YP)?node-id=318-1469)
