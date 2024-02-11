@@ -14,7 +14,7 @@ ImageFeed - это приложение для просмотра фотогра
 
 <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/3.png"> <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/4.png">
 
-# Видеодемонстрация работы приложения
+## **Видеодемонстрация работы приложения**
 - [Видео](https://disk.yandex.ru/i/mtfpRt7M82DV-Q)
 
 ## Стек
