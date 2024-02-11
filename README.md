@@ -10,6 +10,9 @@ ImageFeed - это приложение для просмотра фотогра
  
 ## **Скрины приложения**
 
+<img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/1.png"> <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/2.png">
+
+<img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/3.png"> <img width="200" src="https://github.com/Kosmonur/ImageFeed-ios/blob/main/ImageFeed-ios/Assets.xcassets/ScreenShots/4.png">
 
 ## Стек
 - архитектура MVP
